@@ -25,6 +25,7 @@ cur = conn.cursor()
 
 
 def populate(data):
+    """retreiving labels for objects, affordance, physical and category."""
     executeStr = "SELECT object_id, object_label, object_category FROM object"
     cur.execute(executeStr)
     queried = cur.fetchall()
@@ -48,7 +49,8 @@ def populate(data):
 
 final_list =[]
 def deserialize_rule_book():
-    """takes in string for original and features in a serialized form created by getting inferred edges
+    """
+     takes in string for original and features in a serialized form created by getting inferred edges
      from "summary" table
         WHAT TO RETURN : starting one's index of node in pyvis
                          ending one's index of node in pyvis

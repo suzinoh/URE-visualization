@@ -23,20 +23,24 @@ pg.produce_prolog_rule(sub_relations, data)
 # TODO uncomment the below
 # for item in data["object"]:
 #     nx_graph.add_node(item.id, size=400, title=item.name, group=item.category)
-for item in data["affordance"]:
-    if item.isActive == 1:
-        var = 1
-    else:
-        var = 0
-    nx_graph.add_node(item.id+1000, title=item.name, group=1000+var, size=100)
-for item in data["physical"]:
-    nx_graph.add_node(item.id+2000, title=item.name, group=2000+item.type, size=100)
-for item in data["category"]:
-    nx_graph.add_node(item.id+3000, title=item.name, group=3000, size=100)
-for ids, weights in sub_relations:
-    start_id, end_id = ids[0], ids[1]
-    if start_id < 10000 and end_id < 10000:
-        if float(weights) > 0.30:
-            nx_graph.add_edge(start_id, end_id, weight=float(weights))
-nx_graph.show_buttons(filter_=['physics'])
-nx_graph.show("30percent_inferrence.html")
+def create_example():
+    """creating the pyvis representation for the inferred / absolute relations
+    currently only implemented the inferrencing part
+    """
+    for item in data["affordance"]:
+        if item.isActive == 1:
+            var = 1
+        else:
+            var = 0
+        nx_graph.add_node(item.id+1000, title=item.name, group=1000+var, size=100)
+    for item in data["physical"]:
+        nx_graph.add_node(item.id+2000, title=item.name, group=2000+item.type, size=100)
+    for item in data["category"]:
+        nx_graph.add_node(item.id+3000, title=item.name, group=3000, size=100)
+    for ids, weights in sub_relations:
+        start_id, end_id = ids[0], ids[1]
+        if start_id < 10000 and end_id < 10000:
+            if float(weights) > 0.30:
+                nx_graph.add_edge(start_id, end_id, weight=float(weights))
+    nx_graph.show_buttons(filter_=['physics'])
+    nx_graph.show("30percent_inferrence.html")
