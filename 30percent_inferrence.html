@@ -1,0 +1,1196 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+                <link href="lib/tom-select/tom-select.css" rel="stylesheet">
+                <script src="lib/tom-select/tom-select.complete.min.js"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+                <div id="select-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-10 pb-2">
+                            <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="selectNode([value]);"
+                            id="select-node"
+                            placeholder="Select node..."
+                            >
+                                <option selected>Select a Node by ID</option>
+                                
+                                    <option value="1000">1000</option>
+                                
+                                    <option value="1001">1001</option>
+                                
+                                    <option value="1002">1002</option>
+                                
+                                    <option value="1003">1003</option>
+                                
+                                    <option value="1004">1004</option>
+                                
+                                    <option value="1005">1005</option>
+                                
+                                    <option value="1006">1006</option>
+                                
+                                    <option value="1007">1007</option>
+                                
+                                    <option value="1008">1008</option>
+                                
+                                    <option value="1009">1009</option>
+                                
+                                    <option value="1010">1010</option>
+                                
+                                    <option value="1011">1011</option>
+                                
+                                    <option value="1012">1012</option>
+                                
+                                    <option value="1013">1013</option>
+                                
+                                    <option value="1014">1014</option>
+                                
+                                    <option value="1015">1015</option>
+                                
+                                    <option value="1016">1016</option>
+                                
+                                    <option value="1017">1017</option>
+                                
+                                    <option value="1018">1018</option>
+                                
+                                    <option value="1019">1019</option>
+                                
+                                    <option value="1020">1020</option>
+                                
+                                    <option value="1021">1021</option>
+                                
+                                    <option value="1022">1022</option>
+                                
+                                    <option value="1023">1023</option>
+                                
+                                    <option value="1024">1024</option>
+                                
+                                    <option value="1025">1025</option>
+                                
+                                    <option value="1026">1026</option>
+                                
+                                    <option value="1027">1027</option>
+                                
+                                    <option value="1029">1029</option>
+                                
+                                    <option value="1030">1030</option>
+                                
+                                    <option value="1031">1031</option>
+                                
+                                    <option value="1032">1032</option>
+                                
+                                    <option value="1033">1033</option>
+                                
+                                    <option value="1034">1034</option>
+                                
+                                    <option value="1035">1035</option>
+                                
+                                    <option value="1036">1036</option>
+                                
+                                    <option value="1037">1037</option>
+                                
+                                    <option value="1038">1038</option>
+                                
+                                    <option value="1039">1039</option>
+                                
+                                    <option value="1040">1040</option>
+                                
+                                    <option value="1041">1041</option>
+                                
+                                    <option value="1042">1042</option>
+                                
+                                    <option value="1043">1043</option>
+                                
+                                    <option value="1044">1044</option>
+                                
+                                    <option value="1045">1045</option>
+                                
+                                    <option value="1046">1046</option>
+                                
+                                    <option value="1047">1047</option>
+                                
+                                    <option value="1048">1048</option>
+                                
+                                    <option value="1049">1049</option>
+                                
+                                    <option value="1050">1050</option>
+                                
+                                    <option value="1051">1051</option>
+                                
+                                    <option value="1052">1052</option>
+                                
+                                    <option value="1053">1053</option>
+                                
+                                    <option value="1054">1054</option>
+                                
+                                    <option value="1055">1055</option>
+                                
+                                    <option value="1056">1056</option>
+                                
+                                    <option value="1057">1057</option>
+                                
+                                    <option value="1058">1058</option>
+                                
+                                    <option value="1059">1059</option>
+                                
+                                    <option value="1060">1060</option>
+                                
+                                    <option value="1061">1061</option>
+                                
+                                    <option value="1062">1062</option>
+                                
+                                    <option value="1063">1063</option>
+                                
+                                    <option value="1064">1064</option>
+                                
+                                    <option value="1065">1065</option>
+                                
+                                    <option value="1066">1066</option>
+                                
+                                    <option value="1067">1067</option>
+                                
+                                    <option value="1068">1068</option>
+                                
+                                    <option value="1069">1069</option>
+                                
+                                    <option value="1070">1070</option>
+                                
+                                    <option value="1071">1071</option>
+                                
+                                    <option value="1072">1072</option>
+                                
+                                    <option value="1074">1074</option>
+                                
+                                    <option value="1075">1075</option>
+                                
+                                    <option value="1076">1076</option>
+                                
+                                    <option value="1077">1077</option>
+                                
+                                    <option value="1078">1078</option>
+                                
+                                    <option value="1079">1079</option>
+                                
+                                    <option value="1081">1081</option>
+                                
+                                    <option value="1082">1082</option>
+                                
+                                    <option value="1083">1083</option>
+                                
+                                    <option value="1084">1084</option>
+                                
+                                    <option value="1085">1085</option>
+                                
+                                    <option value="1086">1086</option>
+                                
+                                    <option value="1087">1087</option>
+                                
+                                    <option value="1088">1088</option>
+                                
+                                    <option value="1089">1089</option>
+                                
+                                    <option value="1090">1090</option>
+                                
+                                    <option value="1091">1091</option>
+                                
+                                    <option value="1092">1092</option>
+                                
+                                    <option value="1093">1093</option>
+                                
+                                    <option value="1094">1094</option>
+                                
+                                    <option value="1095">1095</option>
+                                
+                                    <option value="1096">1096</option>
+                                
+                                    <option value="1097">1097</option>
+                                
+                                    <option value="1098">1098</option>
+                                
+                                    <option value="1099">1099</option>
+                                
+                                    <option value="1100">1100</option>
+                                
+                                    <option value="1101">1101</option>
+                                
+                                    <option value="1102">1102</option>
+                                
+                                    <option value="1103">1103</option>
+                                
+                                    <option value="1104">1104</option>
+                                
+                                    <option value="1105">1105</option>
+                                
+                                    <option value="1106">1106</option>
+                                
+                                    <option value="1107">1107</option>
+                                
+                                    <option value="1108">1108</option>
+                                
+                                    <option value="1109">1109</option>
+                                
+                                    <option value="1110">1110</option>
+                                
+                                    <option value="1111">1111</option>
+                                
+                                    <option value="1112">1112</option>
+                                
+                                    <option value="1113">1113</option>
+                                
+                                    <option value="1114">1114</option>
+                                
+                                    <option value="1115">1115</option>
+                                
+                                    <option value="1116">1116</option>
+                                
+                                    <option value="1117">1117</option>
+                                
+                                    <option value="1118">1118</option>
+                                
+                                    <option value="1119">1119</option>
+                                
+                                    <option value="1120">1120</option>
+                                
+                                    <option value="1121">1121</option>
+                                
+                                    <option value="1122">1122</option>
+                                
+                                    <option value="1123">1123</option>
+                                
+                                    <option value="1124">1124</option>
+                                
+                                    <option value="1125">1125</option>
+                                
+                                    <option value="1126">1126</option>
+                                
+                                    <option value="1127">1127</option>
+                                
+                                    <option value="1128">1128</option>
+                                
+                                    <option value="1129">1129</option>
+                                
+                                    <option value="1130">1130</option>
+                                
+                                    <option value="1131">1131</option>
+                                
+                                    <option value="1132">1132</option>
+                                
+                                    <option value="1133">1133</option>
+                                
+                                    <option value="1134">1134</option>
+                                
+                                    <option value="1135">1135</option>
+                                
+                                    <option value="1136">1136</option>
+                                
+                                    <option value="1137">1137</option>
+                                
+                                    <option value="1138">1138</option>
+                                
+                                    <option value="1139">1139</option>
+                                
+                                    <option value="1140">1140</option>
+                                
+                                    <option value="1141">1141</option>
+                                
+                                    <option value="1142">1142</option>
+                                
+                                    <option value="1143">1143</option>
+                                
+                                    <option value="1144">1144</option>
+                                
+                                    <option value="1145">1145</option>
+                                
+                                    <option value="1146">1146</option>
+                                
+                                    <option value="1147">1147</option>
+                                
+                                    <option value="1148">1148</option>
+                                
+                                    <option value="1149">1149</option>
+                                
+                                    <option value="1150">1150</option>
+                                
+                                    <option value="1151">1151</option>
+                                
+                                    <option value="1152">1152</option>
+                                
+                                    <option value="1153">1153</option>
+                                
+                                    <option value="1154">1154</option>
+                                
+                                    <option value="1155">1155</option>
+                                
+                                    <option value="1156">1156</option>
+                                
+                                    <option value="1157">1157</option>
+                                
+                                    <option value="1158">1158</option>
+                                
+                                    <option value="1159">1159</option>
+                                
+                                    <option value="1160">1160</option>
+                                
+                                    <option value="1161">1161</option>
+                                
+                                    <option value="1162">1162</option>
+                                
+                                    <option value="1163">1163</option>
+                                
+                                    <option value="1164">1164</option>
+                                
+                                    <option value="1165">1165</option>
+                                
+                                    <option value="1166">1166</option>
+                                
+                                    <option value="1167">1167</option>
+                                
+                                    <option value="1168">1168</option>
+                                
+                                    <option value="1169">1169</option>
+                                
+                                    <option value="1170">1170</option>
+                                
+                                    <option value="1171">1171</option>
+                                
+                                    <option value="1172">1172</option>
+                                
+                                    <option value="1173">1173</option>
+                                
+                                    <option value="1174">1174</option>
+                                
+                                    <option value="1175">1175</option>
+                                
+                                    <option value="1176">1176</option>
+                                
+                                    <option value="1177">1177</option>
+                                
+                                    <option value="1178">1178</option>
+                                
+                                    <option value="1179">1179</option>
+                                
+                                    <option value="1180">1180</option>
+                                
+                                    <option value="1181">1181</option>
+                                
+                                    <option value="1182">1182</option>
+                                
+                                    <option value="1183">1183</option>
+                                
+                                    <option value="1184">1184</option>
+                                
+                                    <option value="1185">1185</option>
+                                
+                                    <option value="11000">11000</option>
+                                
+                                    <option value="2000">2000</option>
+                                
+                                    <option value="2001">2001</option>
+                                
+                                    <option value="2002">2002</option>
+                                
+                                    <option value="2003">2003</option>
+                                
+                                    <option value="2004">2004</option>
+                                
+                                    <option value="2005">2005</option>
+                                
+                                    <option value="2006">2006</option>
+                                
+                                    <option value="2007">2007</option>
+                                
+                                    <option value="2008">2008</option>
+                                
+                                    <option value="2009">2009</option>
+                                
+                                    <option value="2010">2010</option>
+                                
+                                    <option value="2011">2011</option>
+                                
+                                    <option value="2012">2012</option>
+                                
+                                    <option value="2013">2013</option>
+                                
+                                    <option value="2014">2014</option>
+                                
+                                    <option value="2015">2015</option>
+                                
+                                    <option value="2016">2016</option>
+                                
+                                    <option value="2017">2017</option>
+                                
+                                    <option value="2018">2018</option>
+                                
+                                    <option value="2019">2019</option>
+                                
+                                    <option value="2020">2020</option>
+                                
+                                    <option value="2021">2021</option>
+                                
+                                    <option value="2022">2022</option>
+                                
+                                    <option value="2023">2023</option>
+                                
+                                    <option value="2024">2024</option>
+                                
+                                    <option value="2025">2025</option>
+                                
+                                    <option value="2026">2026</option>
+                                
+                                    <option value="2027">2027</option>
+                                
+                                    <option value="2028">2028</option>
+                                
+                                    <option value="2029">2029</option>
+                                
+                                    <option value="2030">2030</option>
+                                
+                                    <option value="2031">2031</option>
+                                
+                                    <option value="2032">2032</option>
+                                
+                                    <option value="2033">2033</option>
+                                
+                                    <option value="2034">2034</option>
+                                
+                                    <option value="2035">2035</option>
+                                
+                                    <option value="2036">2036</option>
+                                
+                                    <option value="2037">2037</option>
+                                
+                                    <option value="2038">2038</option>
+                                
+                                    <option value="2039">2039</option>
+                                
+                                    <option value="2040">2040</option>
+                                
+                                    <option value="2041">2041</option>
+                                
+                                    <option value="2042">2042</option>
+                                
+                                    <option value="2043">2043</option>
+                                
+                                    <option value="2044">2044</option>
+                                
+                                    <option value="2045">2045</option>
+                                
+                                    <option value="2046">2046</option>
+                                
+                                    <option value="2047">2047</option>
+                                
+                                    <option value="2048">2048</option>
+                                
+                                    <option value="2049">2049</option>
+                                
+                                    <option value="2050">2050</option>
+                                
+                                    <option value="2051">2051</option>
+                                
+                                    <option value="2052">2052</option>
+                                
+                                    <option value="2053">2053</option>
+                                
+                                    <option value="2054">2054</option>
+                                
+                                    <option value="2055">2055</option>
+                                
+                                    <option value="2056">2056</option>
+                                
+                                    <option value="2057">2057</option>
+                                
+                                    <option value="2058">2058</option>
+                                
+                                    <option value="2059">2059</option>
+                                
+                                    <option value="2060">2060</option>
+                                
+                                    <option value="2061">2061</option>
+                                
+                                    <option value="2062">2062</option>
+                                
+                                    <option value="2063">2063</option>
+                                
+                                    <option value="2064">2064</option>
+                                
+                                    <option value="2065">2065</option>
+                                
+                                    <option value="2066">2066</option>
+                                
+                                    <option value="2067">2067</option>
+                                
+                                    <option value="2068">2068</option>
+                                
+                                    <option value="2069">2069</option>
+                                
+                                    <option value="2070">2070</option>
+                                
+                                    <option value="2071">2071</option>
+                                
+                                    <option value="2072">2072</option>
+                                
+                                    <option value="2073">2073</option>
+                                
+                                    <option value="2074">2074</option>
+                                
+                                    <option value="2075">2075</option>
+                                
+                                    <option value="2076">2076</option>
+                                
+                                    <option value="2077">2077</option>
+                                
+                                    <option value="2078">2078</option>
+                                
+                                    <option value="2079">2079</option>
+                                
+                                    <option value="2080">2080</option>
+                                
+                                    <option value="2081">2081</option>
+                                
+                                    <option value="2082">2082</option>
+                                
+                                    <option value="2083">2083</option>
+                                
+                                    <option value="2084">2084</option>
+                                
+                                    <option value="2085">2085</option>
+                                
+                                    <option value="2086">2086</option>
+                                
+                                    <option value="2087">2087</option>
+                                
+                                    <option value="2088">2088</option>
+                                
+                                    <option value="2089">2089</option>
+                                
+                                    <option value="2090">2090</option>
+                                
+                                    <option value="2091">2091</option>
+                                
+                                    <option value="2092">2092</option>
+                                
+                                    <option value="2093">2093</option>
+                                
+                                    <option value="2094">2094</option>
+                                
+                                    <option value="2095">2095</option>
+                                
+                                    <option value="2096">2096</option>
+                                
+                                    <option value="2097">2097</option>
+                                
+                                    <option value="2098">2098</option>
+                                
+                                    <option value="2099">2099</option>
+                                
+                                    <option value="2100">2100</option>
+                                
+                                    <option value="2101">2101</option>
+                                
+                                    <option value="2102">2102</option>
+                                
+                                    <option value="2103">2103</option>
+                                
+                                    <option value="2104">2104</option>
+                                
+                                    <option value="2105">2105</option>
+                                
+                                    <option value="2106">2106</option>
+                                
+                                    <option value="2107">2107</option>
+                                
+                                    <option value="2108">2108</option>
+                                
+                                    <option value="2109">2109</option>
+                                
+                                    <option value="2110">2110</option>
+                                
+                                    <option value="2111">2111</option>
+                                
+                                    <option value="2112">2112</option>
+                                
+                                    <option value="2113">2113</option>
+                                
+                                    <option value="2114">2114</option>
+                                
+                                    <option value="2115">2115</option>
+                                
+                                    <option value="2116">2116</option>
+                                
+                                    <option value="2117">2117</option>
+                                
+                                    <option value="2118">2118</option>
+                                
+                                    <option value="2119">2119</option>
+                                
+                                    <option value="2120">2120</option>
+                                
+                                    <option value="2121">2121</option>
+                                
+                                    <option value="2122">2122</option>
+                                
+                                    <option value="2123">2123</option>
+                                
+                                    <option value="2124">2124</option>
+                                
+                                    <option value="2125">2125</option>
+                                
+                                    <option value="2126">2126</option>
+                                
+                                    <option value="2127">2127</option>
+                                
+                                    <option value="2128">2128</option>
+                                
+                                    <option value="2129">2129</option>
+                                
+                                    <option value="2130">2130</option>
+                                
+                                    <option value="2131">2131</option>
+                                
+                                    <option value="2132">2132</option>
+                                
+                                    <option value="2133">2133</option>
+                                
+                                    <option value="2134">2134</option>
+                                
+                                    <option value="2135">2135</option>
+                                
+                                    <option value="2136">2136</option>
+                                
+                                    <option value="2137">2137</option>
+                                
+                                    <option value="2138">2138</option>
+                                
+                                    <option value="2139">2139</option>
+                                
+                                    <option value="2140">2140</option>
+                                
+                                    <option value="2141">2141</option>
+                                
+                                    <option value="2143">2143</option>
+                                
+                                    <option value="2144">2144</option>
+                                
+                                    <option value="2145">2145</option>
+                                
+                                    <option value="2146">2146</option>
+                                
+                                    <option value="2147">2147</option>
+                                
+                                    <option value="2148">2148</option>
+                                
+                                    <option value="2149">2149</option>
+                                
+                                    <option value="2150">2150</option>
+                                
+                                    <option value="2151">2151</option>
+                                
+                                    <option value="2152">2152</option>
+                                
+                                    <option value="2153">2153</option>
+                                
+                                    <option value="2154">2154</option>
+                                
+                                    <option value="2155">2155</option>
+                                
+                                    <option value="12000">12000</option>
+                                
+                                    <option value="3000">3000</option>
+                                
+                                    <option value="3001">3001</option>
+                                
+                                    <option value="3002">3002</option>
+                                
+                                    <option value="3003">3003</option>
+                                
+                                    <option value="3004">3004</option>
+                                
+                                    <option value="3005">3005</option>
+                                
+                                    <option value="3006">3006</option>
+                                
+                                    <option value="3007">3007</option>
+                                
+                                    <option value="3008">3008</option>
+                                
+                                    <option value="3009">3009</option>
+                                
+                                    <option value="3010">3010</option>
+                                
+                                    <option value="3011">3011</option>
+                                
+                                    <option value="3012">3012</option>
+                                
+                                    <option value="3013">3013</option>
+                                
+                                    <option value="3014">3014</option>
+                                
+                                    <option value="3015">3015</option>
+                                
+                                    <option value="3016">3016</option>
+                                
+                                    <option value="3017">3017</option>
+                                
+                                    <option value="3018">3018</option>
+                                
+                                    <option value="3019">3019</option>
+                                
+                                    <option value="3020">3020</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2 pb-2">
+                            <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
+              <div id="filter-menu" class="card-header">
+                <div class="row no-gutters">
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'item')"
+                            id="select-item"
+                        >
+                        <option value="">Select a network item</option>
+                        <option value="edge">edge</option>
+                        <option value="node">node</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            onchange="updateFilter(value, 'property')"
+                            id="select-property"
+                        >
+                        <option value="">Select a property...</option>
+                    </select>
+                  </div>
+                  <div class="col-3 pb-2">
+                    <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="select-value"
+                        >
+                        <option value="">Select value(s)...</option>
+                    </select>
+                  </div>
+                  <div class="col-1 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="highlightFilter(filter);">Filter</button>
+                  </div>
+                  <div class="col-2 pb-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="clearFilter(true)">Reset Selection</button>
+                  </div>
+                </div>
+              </div>
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+                  new TomSelect("#select-node",{
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      }
+                  });
+              
+
+              
+                  // explicitly using onItemAdd and this function as we need to save multiple values
+                  let updateValueFilter = function() {
+                      return function () {
+                      filter['value'].push(arguments[0])
+                      }
+                  }
+
+                  let valueControl = new TomSelect("#select-value",{
+                      maxItems: null,
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: updateValueFilter()
+                  });
+
+                  let addValues = function() {
+                      return function () {
+                          // clear the current value options and add the selected attribute values
+                          // tom-select handles duplicates
+                          let selectedProperty = arguments[0];
+                          valueControl.clear();
+                          valueControl.clearOptions();
+                          filter['value'] = []
+                          if (filter['item'] === 'node') {
+                              for (let each in allNodes) {
+                                  valueControl.addOption({
+                                      id:allNodes[each][selectedProperty],
+                                      title:allNodes[each][selectedProperty]
+                                  })
+                              }
+                          }
+                          else if (filter['item'] === 'edge') {
+                              for (let each in allEdges) {
+                                  valueControl.addOption({
+                                      id:allEdges[each][selectedProperty],
+                                      title:allEdges[each][selectedProperty]
+                                  })
+                              }
+                          }
+                      }
+                  };
+
+                  let propControl = new TomSelect("#select-property",{
+                      valueField: 'id',
+                      labelField: 'title',
+                      searchField: 'title',
+                      create: false,
+                      sortField: {
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addValues()
+                  });
+
+                  let addProperties = function() {
+                      return function () {
+                          // loops through the selected network item and adds the attributes to dropdown
+                          // tom-select handles duplicates
+                          clearFilter(false)
+                          if (arguments[0] === 'edge') {
+                              for (let each in allEdges) {
+                                  if (allEdges.hasOwnProperty(each)) {
+                                      for (let eachProp in allEdges[each]) {
+                                          if (allEdges[each].hasOwnProperty(eachProp)) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                          else if (arguments[0] === 'node') {
+                              for (let each in allNodes) {
+                                  if (allNodes.hasOwnProperty(each)) {
+                                      for (let eachProp in allNodes[each]) {
+                                          if (allNodes[each].hasOwnProperty(eachProp)
+                                              && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+                                                  && eachProp !== 'hiddenLabel')) {
+                                              propControl.addOption({id: eachProp, title: eachProp})
+
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  let itemControl = new TomSelect("#select-item",{
+                      create: false,
+                      sortField:{
+                          field: "text",
+                          direction: "asc"
+                      },
+                      onItemAdd: addProperties()
+                  });
+
+                  function clearFilter(reset) {
+                      // utility function to clear all the selected filter options
+                      // if reset is set to true, the existing filter will be removed
+                      // else, only the dropdown options are cleared
+                      propControl.clear();
+                      propControl.clearOptions();
+                      valueControl.clear();
+                      valueControl.clearOptions();
+                      filter = {
+                          item : '',
+                          property : '',
+                          value : []
+                      }
+                      if (reset) {
+                          itemControl.clear();
+                          filterHighlight({nodes: []})
+                      }
+                  }
+
+                  function updateFilter(value, key) {
+                      // key could be 'item' or 'property' and value is as selected in dropdown
+                      filter[key] = value
+                  }
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 1001, "id": 1000, "label": 1000, "shape": "dot", "size": 100, "title": "cut"}, {"font": {"color": "white"}, "group": 1000, "id": 1001, "label": 1001, "shape": "dot", "size": 100, "title": "contain liquid"}, {"font": {"color": "white"}, "group": 1000, "id": 1002, "label": 1002, "shape": "dot", "size": 100, "title": "contain solid"}, {"font": {"color": "white"}, "group": 1000, "id": 1003, "label": 1003, "shape": "dot", "size": 100, "title": "store"}, {"font": {"color": "white"}, "group": 1001, "id": 1004, "label": 1004, "shape": "dot", "size": 100, "title": "scoop"}, {"font": {"color": "white"}, "group": 1001, "id": 1005, "label": 1005, "shape": "dot", "size": 100, "title": "pound"}, {"font": {"color": "white"}, "group": 1001, "id": 1006, "label": 1006, "shape": "dot", "size": 100, "title": "illuminate"}, {"font": {"color": "white"}, "group": 1001, "id": 1007, "label": 1007, "shape": "dot", "size": 100, "title": "display"}, {"font": {"color": "white"}, "group": 1001, "id": 1008, "label": 1008, "shape": "dot", "size": 100, "title": "dry"}, {"font": {"color": "white"}, "group": 1001, "id": 1009, "label": 1009, "shape": "dot", "size": 100, "title": "hold"}, {"font": {"color": "white"}, "group": 1001, "id": 1010, "label": 1010, "shape": "dot", "size": 100, "title": "sanitary"}, {"font": {"color": "white"}, "group": 1000, "id": 1011, "label": 1011, "shape": "dot", "size": 100, "title": "protect"}, {"font": {"color": "white"}, "group": 1001, "id": 1012, "label": 1012, "shape": "dot", "size": 100, "title": "clean"}, {"font": {"color": "white"}, "group": 1001, "id": 1013, "label": 1013, "shape": "dot", "size": 100, "title": "wipe"}, {"font": {"color": "white"}, "group": 1000, "id": 1014, "label": 1014, "shape": "dot", "size": 100, "title": "conduct heat"}, {"font": {"color": "white"}, "group": 1000, "id": 1015, "label": 1015, "shape": "dot", "size": 100, "title": "energy source"}, {"font": {"color": "white"}, "group": 1001, "id": 1016, "label": 1016, "shape": "dot", "size": 100, "title": "whisk"}, {"font": {"color": "white"}, "group": 1001, "id": 1017, "label": 1017, "shape": "dot", "size": 100, "title": "poke"}, {"font": {"color": "white"}, "group": 1000, "id": 1018, "label": 1018, "shape": "dot", "size": 100, "title": "warmth"}, {"font": {"color": "white"}, "group": 1000, "id": 1019, "label": 1019, "shape": "dot", "size": 100, "title": "cover"}, {"font": {"color": "white"}, "group": 1000, "id": 1020, "label": 1020, "shape": "dot", "size": 100, "title": "secure"}, {"font": {"color": "white"}, "group": 1001, "id": 1021, "label": 1021, "shape": "dot", "size": 100, "title": "support"}, {"font": {"color": "white"}, "group": 1001, "id": 1022, "label": 1022, "shape": "dot", "size": 100, "title": "entertainment"}, {"font": {"color": "white"}, "group": 1000, "id": 1023, "label": 1023, "shape": "dot", "size": 100, "title": "sit"}, {"font": {"color": "white"}, "group": 1000, "id": 1024, "label": 1024, "shape": "dot", "size": 100, "title": "pull"}, {"font": {"color": "white"}, "group": 1000, "id": 1025, "label": 1025, "shape": "dot", "size": 100, "title": "rollable"}, {"font": {"color": "white"}, "group": 1000, "id": 1026, "label": 1026, "shape": "dot", "size": 100, "title": "stackable"}, {"font": {"color": "white"}, "group": 1000, "id": 1027, "label": 1027, "shape": "dot", "size": 100, "title": "grasp"}, {"font": {"color": "white"}, "group": 1001, "id": 1029, "label": 1029, "shape": "dot", "size": 100, "title": "walk"}, {"font": {"color": "white"}, "group": 1001, "id": 1030, "label": 1030, "shape": "dot", "size": 100, "title": "delete"}, {"font": {"color": "white"}, "group": 1001, "id": 1031, "label": 1031, "shape": "dot", "size": 100, "title": "burying the dead"}, {"font": {"color": "white"}, "group": 1001, "id": 1032, "label": 1032, "shape": "dot", "size": 100, "title": "laid over a grave"}, {"font": {"color": "white"}, "group": 1001, "id": 1033, "label": 1033, "shape": "dot", "size": 100, "title": "images"}, {"font": {"color": "white"}, "group": 1001, "id": 1034, "label": 1034, "shape": "dot", "size": 100, "title": "carrying of people or things"}, {"font": {"color": "white"}, "group": 1001, "id": 1035, "label": 1035, "shape": "dot", "size": 100, "title": "transmitting"}, {"font": {"color": "white"}, "group": 1001, "id": 1036, "label": 1036, "shape": "dot", "size": 100, "title": "flat surface"}, {"font": {"color": "white"}, "group": 1001, "id": 1037, "label": 1037, "shape": "dot", "size": 100, "title": "visibility"}, {"font": {"color": "white"}, "group": 1001, "id": 1038, "label": 1038, "shape": "dot", "size": 100, "title": "carry goods"}, {"font": {"color": "white"}, "group": 1001, "id": 1039, "label": 1039, "shape": "dot", "size": 100, "title": "carry people"}, {"font": {"color": "white"}, "group": 1001, "id": 1040, "label": 1040, "shape": "dot", "size": 100, "title": "free to swing"}, {"font": {"color": "white"}, "group": 1001, "id": 1041, "label": 1041, "shape": "dot", "size": 100, "title": "refuse"}, {"font": {"color": "white"}, "group": 1001, "id": 1042, "label": 1042, "shape": "dot", "size": 100, "title": "moving"}, {"font": {"color": "white"}, "group": 1001, "id": 1043, "label": 1043, "shape": "dot", "size": 100, "title": "fishing"}, {"font": {"color": "white"}, "group": 1001, "id": 1044, "label": 1044, "shape": "dot", "size": 100, "title": "carrying"}, {"font": {"color": "white"}, "group": 1001, "id": 1045, "label": 1045, "shape": "dot", "size": 100, "title": "drive"}, {"font": {"color": "white"}, "group": 1001, "id": 1046, "label": 1046, "shape": "dot", "size": 100, "title": "throwing"}, {"font": {"color": "white"}, "group": 1001, "id": 1047, "label": 1047, "shape": "dot", "size": 100, "title": "hurling"}, {"font": {"color": "white"}, "group": 1001, "id": 1048, "label": 1048, "shape": "dot", "size": 100, "title": "climbing"}, {"font": {"color": "white"}, "group": 1001, "id": 1049, "label": 1049, "shape": "dot", "size": 100, "title": "illustrating"}, {"font": {"color": "white"}, "group": 1001, "id": 1050, "label": 1050, "shape": "dot", "size": 100, "title": "representation"}, {"font": {"color": "white"}, "group": 1001, "id": 1051, "label": 1051, "shape": "dot", "size": 100, "title": "stamping"}, {"font": {"color": "white"}, "group": 1000, "id": 1052, "label": 1052, "shape": "dot", "size": 100, "title": "detect and record the passage of electromagnetic waves"}, {"font": {"color": "white"}, "group": 1001, "id": 1053, "label": 1053, "shape": "dot", "size": 100, "title": "free to swing"}, {"font": {"color": "white"}, "group": 1001, "id": 1054, "label": 1054, "shape": "dot", "size": 100, "title": "calculation"}, {"font": {"color": "white"}, "group": 1001, "id": 1055, "label": 1055, "shape": "dot", "size": 100, "title": "refuse"}, {"font": {"color": "white"}, "group": 1001, "id": 1056, "label": 1056, "shape": "dot", "size": 100, "title": "drive"}, {"font": {"color": "white"}, "group": 1000, "id": 1057, "label": 1057, "shape": "dot", "size": 100, "title": "collection"}, {"font": {"color": "white"}, "group": 1000, "id": 1058, "label": 1058, "shape": "dot", "size": 100, "title": "representation"}, {"font": {"color": "white"}, "group": 1001, "id": 1059, "label": 1059, "shape": "dot", "size": 100, "title": "eliciting"}, {"font": {"color": "white"}, "group": 1000, "id": 1060, "label": 1060, "shape": "dot", "size": 100, "title": "suppresses"}, {"font": {"color": "white"}, "group": 1001, "id": 1061, "label": 1061, "shape": "dot", "size": 100, "title": "suppressing"}, {"font": {"color": "white"}, "group": 1000, "id": 1062, "label": 1062, "shape": "dot", "size": 100, "title": "improve growth"}, {"font": {"color": "white"}, "group": 1001, "id": 1063, "label": 1063, "shape": "dot", "size": 100, "title": "gives smoke"}, {"font": {"color": "white"}, "group": 1001, "id": 1064, "label": 1064, "shape": "dot", "size": 100, "title": "burner"}, {"font": {"color": "white"}, "group": 1001, "id": 1065, "label": 1065, "shape": "dot", "size": 100, "title": "turns to ashes"}, {"font": {"color": "white"}, "group": 1001, "id": 1066, "label": 1066, "shape": "dot", "size": 100, "title": "melts things/chemicals"}, {"font": {"color": "white"}, "group": 1000, "id": 1067, "label": 1067, "shape": "dot", "size": 100, "title": "measurement"}, {"font": {"color": "white"}, "group": 1001, "id": 1068, "label": 1068, "shape": "dot", "size": 100, "title": "adding something"}, {"font": {"color": "white"}, "group": 1001, "id": 1069, "label": 1069, "shape": "dot", "size": 100, "title": "introducing new ones"}, {"font": {"color": "white"}, "group": 1001, "id": 1070, "label": 1070, "shape": "dot", "size": 100, "title": "sewing"}, {"font": {"color": "white"}, "group": 1001, "id": 1071, "label": 1071, "shape": "dot", "size": 100, "title": "birth"}, {"font": {"color": "white"}, "group": 1001, "id": 1072, "label": 1072, "shape": "dot", "size": 100, "title": "sell"}, {"font": {"color": "white"}, "group": 1001, "id": 1074, "label": 1074, "shape": "dot", "size": 100, "title": "eat"}, {"font": {"color": "white"}, "group": 1001, "id": 1075, "label": 1075, "shape": "dot", "size": 100, "title": "fixing"}, {"font": {"color": "white"}, "group": 1000, "id": 1076, "label": 1076, "shape": "dot", "size": 100, "title": "country"}, {"font": {"color": "white"}, "group": 1001, "id": 1077, "label": 1077, "shape": "dot", "size": 100, "title": "control"}, {"font": {"color": "white"}, "group": 1001, "id": 1078, "label": 1078, "shape": "dot", "size": 100, "title": "music"}, {"font": {"color": "white"}, "group": 1001, "id": 1079, "label": 1079, "shape": "dot", "size": 100, "title": "mislead"}, {"font": {"color": "white"}, "group": 1001, "id": 1081, "label": 1081, "shape": "dot", "size": 100, "title": "worn"}, {"font": {"color": "white"}, "group": 1001, "id": 1082, "label": 1082, "shape": "dot", "size": 100, "title": "uniform"}, {"font": {"color": "white"}, "group": 1000, "id": 1083, "label": 1083, "shape": "dot", "size": 100, "title": "worn"}, {"font": {"color": "white"}, "group": 1001, "id": 1084, "label": 1084, "shape": "dot", "size": 100, "title": "washed"}, {"font": {"color": "white"}, "group": 1000, "id": 1085, "label": 1085, "shape": "dot", "size": 100, "title": "dock"}, {"font": {"color": "white"}, "group": 1001, "id": 1086, "label": 1086, "shape": "dot", "size": 100, "title": "urination"}, {"font": {"color": "white"}, "group": 1001, "id": 1087, "label": 1087, "shape": "dot", "size": 100, "title": "jail accused"}, {"font": {"color": "white"}, "group": 1000, "id": 1088, "label": 1088, "shape": "dot", "size": 100, "title": "place"}, {"font": {"color": "white"}, "group": 1001, "id": 1089, "label": 1089, "shape": "dot", "size": 100, "title": "jamming"}, {"font": {"color": "white"}, "group": 1000, "id": 1090, "label": 1090, "shape": "dot", "size": 100, "title": "framing focusing the picture"}, {"font": {"color": "white"}, "group": 1000, "id": 1091, "label": 1091, "shape": "dot", "size": 100, "title": "placed on an overhead projector for display to an audience"}, {"font": {"color": "white"}, "group": 1000, "id": 1092, "label": 1092, "shape": "dot", "size": 100, "title": "companies"}, {"font": {"color": "white"}, "group": 1000, "id": 1093, "label": 1093, "shape": "dot", "size": 100, "title": "ignettebrief evocative description"}, {"font": {"color": "white"}, "group": 1000, "id": 1094, "label": 1094, "shape": "dot", "size": 100, "title": "its a type of house that was originally an ancient roman empire country house"}, {"font": {"color": "white"}, "group": 1000, "id": 1095, "label": 1095, "shape": "dot", "size": 100, "title": "its a place for the production of wines"}, {"font": {"color": "white"}, "group": 1000, "id": 1096, "label": 1096, "shape": "dot", "size": 100, "title": "used as warehouses bottling lines"}, {"font": {"color": "white"}, "group": 1000, "id": 1097, "label": 1097, "shape": "dot", "size": 100, "title": "land for growing grapes"}, {"font": {"color": "white"}, "group": 1000, "id": 1098, "label": 1098, "shape": "dot", "size": 100, "title": "somethings untouched"}, {"font": {"color": "white"}, "group": 1000, "id": 1099, "label": 1099, "shape": "dot", "size": 100, "title": "infectious particle which cause scrapie and other degenerative disease"}, {"font": {"color": "white"}, "group": 1000, "id": 1100, "label": 1100, "shape": "dot", "size": 100, "title": " knowledge of fine arts"}, {"font": {"color": "white"}, "group": 1000, "id": 1101, "label": 1101, "shape": "dot", "size": 100, "title": "used as basis for manufacturing rayon fibre"}, {"font": {"color": "white"}, "group": 1000, "id": 1102, "label": 1102, "shape": "dot", "size": 100, "title": "used as cellulose film"}, {"font": {"color": "white"}, "group": 1001, "id": 1103, "label": 1103, "shape": "dot", "size": 100, "title": "wandering"}, {"font": {"color": "white"}, "group": 1000, "id": 1104, "label": 1104, "shape": "dot", "size": 100, "title": "decorative"}, {"font": {"color": "white"}, "group": 1000, "id": 1105, "label": 1105, "shape": "dot", "size": 100, "title": "tourism"}, {"font": {"color": "white"}, "group": 1001, "id": 1106, "label": 1106, "shape": "dot", "size": 100, "title": "express farwell"}, {"font": {"color": "white"}, "group": 1000, "id": 1107, "label": 1107, "shape": "dot", "size": 100, "title": "decorative"}, {"font": {"color": "white"}, "group": 1001, "id": 1108, "label": 1108, "shape": "dot", "size": 100, "title": "regulator"}, {"font": {"color": "white"}, "group": 1001, "id": 1109, "label": 1109, "shape": "dot", "size": 100, "title": "control flow direction"}, {"font": {"color": "white"}, "group": 1001, "id": 1110, "label": 1110, "shape": "dot", "size": 100, "title": "directions"}, {"font": {"color": "white"}, "group": 1001, "id": 1111, "label": 1111, "shape": "dot", "size": 100, "title": "safety"}, {"font": {"color": "white"}, "group": 1001, "id": 1112, "label": 1112, "shape": "dot", "size": 100, "title": "inhaling"}, {"font": {"color": "white"}, "group": 1001, "id": 1113, "label": 1113, "shape": "dot", "size": 100, "title": "math"}, {"font": {"color": "white"}, "group": 1001, "id": 1114, "label": 1114, "shape": "dot", "size": 100, "title": "measuring"}, {"font": {"color": "white"}, "group": 1001, "id": 1115, "label": 1115, "shape": "dot", "size": 100, "title": "speed calculator"}, {"font": {"color": "white"}, "group": 1000, "id": 1116, "label": 1116, "shape": "dot", "size": 100, "title": "transporting"}, {"font": {"color": "white"}, "group": 1000, "id": 1117, "label": 1117, "shape": "dot", "size": 100, "title": "measuring flow rate or exerting suction"}, {"font": {"color": "white"}, "group": 1001, "id": 1118, "label": 1118, "shape": "dot", "size": 100, "title": "frequently appearing in the twilight sky "}, {"font": {"color": "white"}, "group": 1001, "id": 1119, "label": 1119, "shape": "dot", "size": 100, "title": "obtaining fractional parts of barometer"}, {"font": {"color": "white"}, "group": 1001, "id": 1120, "label": 1120, "shape": "dot", "size": 100, "title": "obtaining fractional parts of sextant"}, {"font": {"color": "white"}, "group": 1001, "id": 1121, "label": 1121, "shape": "dot", "size": 100, "title": "writing"}, {"font": {"color": "white"}, "group": 1001, "id": 1122, "label": 1122, "shape": "dot", "size": 100, "title": "drawing"}, {"font": {"color": "white"}, "group": 1001, "id": 1123, "label": 1123, "shape": "dot", "size": 100, "title": "convey"}, {"font": {"color": "white"}, "group": 1001, "id": 1124, "label": 1124, "shape": "dot", "size": 100, "title": "sell"}, {"font": {"color": "white"}, "group": 1000, "id": 1125, "label": 1125, "shape": "dot", "size": 100, "title": "cage bird"}, {"font": {"color": "white"}, "group": 1000, "id": 1126, "label": 1126, "shape": "dot", "size": 100, "title": "coating"}, {"font": {"color": "white"}, "group": 1001, "id": 1127, "label": 1127, "shape": "dot", "size": 100, "title": "discovering"}, {"font": {"color": "white"}, "group": 1000, "id": 1128, "label": 1128, "shape": "dot", "size": 100, "title": "not likely to cause offence"}, {"font": {"color": "white"}, "group": 1000, "id": 1129, "label": 1129, "shape": "dot", "size": 100, "title": "digestive organ"}, {"font": {"color": "white"}, "group": 1000, "id": 1130, "label": 1130, "shape": "dot", "size": 100, "title": "reproductive organs"}, {"font": {"color": "white"}, "group": 1000, "id": 1131, "label": 1131, "shape": "dot", "size": 100, "title": "stoppage of the flow"}, {"font": {"color": "white"}, "group": 1001, "id": 1132, "label": 1132, "shape": "dot", "size": 100, "title": "making cider"}, {"font": {"color": "white"}, "group": 1000, "id": 1133, "label": 1133, "shape": "dot", "size": 100, "title": "landing"}, {"font": {"color": "white"}, "group": 1000, "id": 1134, "label": 1134, "shape": "dot", "size": 100, "title": "asteroid orbit stars"}, {"font": {"color": "white"}, "group": 1000, "id": 1135, "label": 1135, "shape": "dot", "size": 100, "title": "disaster"}, {"font": {"color": "white"}, "group": 1000, "id": 1136, "label": 1136, "shape": "dot", "size": 100, "title": "high wind"}, {"font": {"color": "white"}, "group": 1000, "id": 1137, "label": 1137, "shape": "dot", "size": 100, "title": "piercing"}, {"font": {"color": "white"}, "group": 1000, "id": 1138, "label": 1138, "shape": "dot", "size": 100, "title": "valley"}, {"font": {"color": "white"}, "group": 1001, "id": 1139, "label": 1139, "shape": "dot", "size": 100, "title": "fly"}, {"font": {"color": "white"}, "group": 1001, "id": 1140, "label": 1140, "shape": "dot", "size": 100, "title": "drop"}, {"font": {"color": "white"}, "group": 1001, "id": 1141, "label": 1141, "shape": "dot", "size": 100, "title": "study"}, {"font": {"color": "white"}, "group": 1001, "id": 1142, "label": 1142, "shape": "dot", "size": 100, "title": "travel"}, {"font": {"color": "white"}, "group": 1001, "id": 1143, "label": 1143, "shape": "dot", "size": 100, "title": "stimulate"}, {"font": {"color": "white"}, "group": 1000, "id": 1144, "label": 1144, "shape": "dot", "size": 100, "title": "area"}, {"font": {"color": "white"}, "group": 1001, "id": 1145, "label": 1145, "shape": "dot", "size": 100, "title": "bomb"}, {"font": {"color": "white"}, "group": 1001, "id": 1146, "label": 1146, "shape": "dot", "size": 100, "title": "hunting"}, {"font": {"color": "white"}, "group": 1001, "id": 1147, "label": 1147, "shape": "dot", "size": 100, "title": "attract attention"}, {"font": {"color": "white"}, "group": 1001, "id": 1148, "label": 1148, "shape": "dot", "size": 100, "title": "to make other articles"}, {"font": {"color": "white"}, "group": 1001, "id": 1149, "label": 1149, "shape": "dot", "size": 100, "title": "to correct or assist defective eyesight"}, {"font": {"color": "white"}, "group": 1000, "id": 1150, "label": 1150, "shape": "dot", "size": 100, "title": "factory glass and glass articles are made"}, {"font": {"color": "white"}, "group": 1000, "id": 1151, "label": 1151, "shape": "dot", "size": 100, "title": "space_difference"}, {"font": {"color": "white"}, "group": 1000, "id": 1152, "label": 1152, "shape": "dot", "size": 100, "title": "hangaer extensive"}, {"font": {"color": "white"}, "group": 1000, "id": 1153, "label": 1153, "shape": "dot", "size": 100, "title": "\tcoordinating center of sensation"}, {"font": {"color": "white"}, "group": 1000, "id": 1154, "label": 1154, "shape": "dot", "size": 100, "title": "brian\tcoordinating center of intellectual"}, {"font": {"color": "white"}, "group": 1000, "id": 1155, "label": 1155, "shape": "dot", "size": 100, "title": "\tcoordinating center of nervous activity"}, {"font": {"color": "white"}, "group": 1000, "id": 1156, "label": 1156, "shape": "dot", "size": 100, "title": "underground-storage-organ"}, {"font": {"color": "white"}, "group": 1001, "id": 1157, "label": 1157, "shape": "dot", "size": 100, "title": "base-ball"}, {"font": {"color": "white"}, "group": 1001, "id": 1158, "label": 1158, "shape": "dot", "size": 100, "title": "table-tennis"}, {"font": {"color": "white"}, "group": 1001, "id": 1159, "label": 1159, "shape": "dot", "size": 100, "title": "preparation"}, {"font": {"color": "white"}, "group": 1001, "id": 1160, "label": 1160, "shape": "dot", "size": 100, "title": "chopping"}, {"font": {"color": "white"}, "group": 1001, "id": 1161, "label": 1161, "shape": "dot", "size": 100, "title": "pureeing"}, {"font": {"color": "white"}, "group": 1001, "id": 1162, "label": 1162, "shape": "dot", "size": 100, "title": "soothe skin"}, {"font": {"color": "white"}, "group": 1001, "id": 1163, "label": 1163, "shape": "dot", "size": 100, "title": "vehicles can use"}, {"font": {"color": "white"}, "group": 1001, "id": 1164, "label": 1164, "shape": "dot", "size": 100, "title": "exercising dominion"}, {"font": {"color": "white"}, "group": 1001, "id": 1165, "label": 1165, "shape": "dot", "size": 100, "title": "flowing to lake"}, {"font": {"color": "white"}, "group": 1001, "id": 1166, "label": 1166, "shape": "dot", "size": 100, "title": "guiding powder"}, {"font": {"color": "white"}, "group": 1001, "id": 1167, "label": 1167, "shape": "dot", "size": 100, "title": "rotate"}, {"font": {"color": "white"}, "group": 1000, "id": 1168, "label": 1168, "shape": "dot", "size": 100, "title": "food preserve"}, {"font": {"color": "white"}, "group": 1001, "id": 1169, "label": 1169, "shape": "dot", "size": 100, "title": "lubricant"}, {"font": {"color": "white"}, "group": 1001, "id": 1170, "label": 1170, "shape": "dot", "size": 100, "title": "cooking"}, {"font": {"color": "white"}, "group": 1001, "id": 1171, "label": 1171, "shape": "dot", "size": 100, "title": "aerating"}, {"font": {"color": "white"}, "group": 1001, "id": 1172, "label": 1172, "shape": "dot", "size": 100, "title": "provide"}, {"font": {"color": "white"}, "group": 1001, "id": 1173, "label": 1173, "shape": "dot", "size": 100, "title": "swallow"}, {"font": {"color": "white"}, "group": 1000, "id": 1174, "label": 1174, "shape": "dot", "size": 100, "title": "nest"}, {"font": {"color": "white"}, "group": 1001, "id": 1175, "label": 1175, "shape": "dot", "size": 100, "title": "heal"}, {"font": {"color": "white"}, "group": 1001, "id": 1176, "label": 1176, "shape": "dot", "size": 100, "title": "to investigate crimes"}, {"font": {"color": "white"}, "group": 1001, "id": 1177, "label": 1177, "shape": "dot", "size": 100, "title": " to solve crimes"}, {"font": {"color": "white"}, "group": 1001, "id": 1178, "label": 1178, "shape": "dot", "size": 100, "title": "weapon"}, {"font": {"color": "white"}, "group": 1001, "id": 1179, "label": 1179, "shape": "dot", "size": 100, "title": "scanning"}, {"font": {"color": "white"}, "group": 1001, "id": 1180, "label": 1180, "shape": "dot", "size": 100, "title": "copying"}, {"font": {"color": "white"}, "group": 1000, "id": 1181, "label": 1181, "shape": "dot", "size": 100, "title": "stand"}, {"font": {"color": "white"}, "group": 1001, "id": 1182, "label": 1182, "shape": "dot", "size": 100, "title": "borrowing by public"}, {"font": {"color": "white"}, "group": 1001, "id": 1183, "label": 1183, "shape": "dot", "size": 100, "title": "borrowing by member of institution"}, {"font": {"color": "white"}, "group": 1001, "id": 1184, "label": 1184, "shape": "dot", "size": 100, "title": "air is drawn"}, {"font": {"color": "white"}, "group": 1001, "id": 1185, "label": 1185, "shape": "dot", "size": 100, "title": "pack belonging"}, {"font": {"color": "white"}, "group": 1000, "id": 11000, "label": 11000, "shape": "dot", "size": 100, "title": "null"}, {"font": {"color": "white"}, "group": 2000, "id": 2000, "label": 2000, "shape": "dot", "size": 100, "title": "liquid"}, {"font": {"color": "white"}, "group": 2000, "id": 2001, "label": 2001, "shape": "dot", "size": 100, "title": "solid"}, {"font": {"color": "white"}, "group": 2000, "id": 2002, "label": 2002, "shape": "dot", "size": 100, "title": "gas"}, {"font": {"color": "white"}, "group": 2000, "id": 2003, "label": 2003, "shape": "dot", "size": 100, "title": "unlabeled"}, {"font": {"color": "white"}, "group": 2001, "id": 2004, "label": 2004, "shape": "dot", "size": 100, "title": "sphere"}, {"font": {"color": "white"}, "group": 2001, "id": 2005, "label": 2005, "shape": "dot", "size": 100, "title": "cube"}, {"font": {"color": "white"}, "group": 2001, "id": 2006, "label": 2006, "shape": "dot", "size": 100, "title": "cylinder"}, {"font": {"color": "white"}, "group": 2001, "id": 2007, "label": 2007, "shape": "dot", "size": 100, "title": "cone"}, {"font": {"color": "white"}, "group": 2001, "id": 2008, "label": 2008, "shape": "dot", "size": 100, "title": "cuboid"}, {"font": {"color": "white"}, "group": 2001, "id": 2009, "label": 2009, "shape": "dot", "size": 100, "title": "hollow"}, {"font": {"color": "white"}, "group": 2001, "id": 2010, "label": 2010, "shape": "dot", "size": 100, "title": "bowl"}, {"font": {"color": "white"}, "group": 2001, "id": 2011, "label": 2011, "shape": "dot", "size": 100, "title": "round"}, {"font": {"color": "white"}, "group": 2001, "id": 2012, "label": 2012, "shape": "dot", "size": 100, "title": "box"}, {"font": {"color": "white"}, "group": 2001, "id": 2013, "label": 2013, "shape": "dot", "size": 100, "title": "concaved"}, {"font": {"color": "white"}, "group": 2001, "id": 2014, "label": 2014, "shape": "dot", "size": 100, "title": "convexed"}, {"font": {"color": "white"}, "group": 2001, "id": 2015, "label": 2015, "shape": "dot", "size": 100, "title": "long"}, {"font": {"color": "white"}, "group": 2001, "id": 2016, "label": 2016, "shape": "dot", "size": 100, "title": "thin-rod"}, {"font": {"color": "white"}, "group": 2001, "id": 2017, "label": 2017, "shape": "dot", "size": 100, "title": "thick-rod"}, {"font": {"color": "white"}, "group": 2001, "id": 2018, "label": 2018, "shape": "dot", "size": 100, "title": "unlabeled"}, {"font": {"color": "white"}, "group": 2002, "id": 2019, "label": 2019, "shape": "dot", "size": 100, "title": "white"}, {"font": {"color": "white"}, "group": 2002, "id": 2020, "label": 2020, "shape": "dot", "size": 100, "title": "black"}, {"font": {"color": "white"}, "group": 2002, "id": 2021, "label": 2021, "shape": "dot", "size": 100, "title": "yellow"}, {"font": {"color": "white"}, "group": 2002, "id": 2022, "label": 2022, "shape": "dot", "size": 100, "title": "red"}, {"font": {"color": "white"}, "group": 2002, "id": 2023, "label": 2023, "shape": "dot", "size": 100, "title": "blue"}, {"font": {"color": "white"}, "group": 2002, "id": 2024, "label": 2024, "shape": "dot", "size": 100, "title": "green"}, {"font": {"color": "white"}, "group": 2002, "id": 2025, "label": 2025, "shape": "dot", "size": 100, "title": "clear"}, {"font": {"color": "white"}, "group": 2002, "id": 2026, "label": 2026, "shape": "dot", "size": 100, "title": "purple"}, {"font": {"color": "white"}, "group": 2002, "id": 2027, "label": 2027, "shape": "dot", "size": 100, "title": "pink"}, {"font": {"color": "white"}, "group": 2002, "id": 2028, "label": 2028, "shape": "dot", "size": 100, "title": "brown"}, {"font": {"color": "white"}, "group": 2002, "id": 2029, "label": 2029, "shape": "dot", "size": 100, "title": "orange"}, {"font": {"color": "white"}, "group": 2002, "id": 2030, "label": 2030, "shape": "dot", "size": 100, "title": "grey"}, {"font": {"color": "white"}, "group": 2002, "id": 2031, "label": 2031, "shape": "dot", "size": 100, "title": "unlabeled"}, {"font": {"color": "white"}, "group": 2003, "id": 2032, "label": 2032, "shape": "dot", "size": 100, "title": "wood"}, {"font": {"color": "white"}, "group": 2003, "id": 2033, "label": 2033, "shape": "dot", "size": 100, "title": "glass"}, {"font": {"color": "white"}, "group": 2003, "id": 2034, "label": 2034, "shape": "dot", "size": 100, "title": "plastic"}, {"font": {"color": "white"}, "group": 2003, "id": 2035, "label": 2035, "shape": "dot", "size": 100, "title": "ceramic"}, {"font": {"color": "white"}, "group": 2003, "id": 2036, "label": 2036, "shape": "dot", "size": 100, "title": "paper"}, {"font": {"color": "white"}, "group": 2003, "id": 2037, "label": 2037, "shape": "dot", "size": 100, "title": "steel"}, {"font": {"color": "white"}, "group": 2003, "id": 2038, "label": 2038, "shape": "dot", "size": 100, "title": "cardboard"}, {"font": {"color": "white"}, "group": 2003, "id": 2039, "label": 2039, "shape": "dot", "size": 100, "title": "brass"}, {"font": {"color": "white"}, "group": 2003, "id": 2040, "label": 2040, "shape": "dot", "size": 100, "title": "fabric"}, {"font": {"color": "white"}, "group": 2003, "id": 2041, "label": 2041, "shape": "dot", "size": 100, "title": "vinyl"}, {"font": {"color": "white"}, "group": 2003, "id": 2042, "label": 2042, "shape": "dot", "size": 100, "title": "stone"}, {"font": {"color": "white"}, "group": 2003, "id": 2043, "label": 2043, "shape": "dot", "size": 100, "title": "leather"}, {"font": {"color": "white"}, "group": 2003, "id": 2044, "label": 2044, "shape": "dot", "size": 100, "title": "cotton"}, {"font": {"color": "white"}, "group": 2003, "id": 2045, "label": 2045, "shape": "dot", "size": 100, "title": "metal"}, {"font": {"color": "white"}, "group": 2003, "id": 2046, "label": 2046, "shape": "dot", "size": 100, "title": "unlabeled"}, {"font": {"color": "white"}, "group": 2004, "id": 2047, "label": 2047, "shape": "dot", "size": 100, "title": "light"}, {"font": {"color": "white"}, "group": 2004, "id": 2048, "label": 2048, "shape": "dot", "size": 100, "title": "medium"}, {"font": {"color": "white"}, "group": 2004, "id": 2049, "label": 2049, "shape": "dot", "size": 100, "title": "heavy"}, {"font": {"color": "white"}, "group": 2004, "id": 2050, "label": 2050, "shape": "dot", "size": 100, "title": "immobile"}, {"font": {"color": "white"}, "group": 2005, "id": 2051, "label": 2051, "shape": "dot", "size": 100, "title": "soft"}, {"font": {"color": "white"}, "group": 2005, "id": 2052, "label": 2052, "shape": "dot", "size": 100, "title": "medium"}, {"font": {"color": "white"}, "group": 2005, "id": 2053, "label": 2053, "shape": "dot", "size": 100, "title": "hard"}, {"font": {"color": "white"}, "group": 2005, "id": 2054, "label": 2054, "shape": "dot", "size": 100, "title": "firm"}, {"font": {"color": "white"}, "group": 2006, "id": 2055, "label": 2055, "shape": "dot", "size": 100, "title": "flammable"}, {"font": {"color": "white"}, "group": 2006, "id": 2056, "label": 2056, "shape": "dot", "size": 100, "title": "toxic"}, {"font": {"color": "white"}, "group": 2006, "id": 2057, "label": 2057, "shape": "dot", "size": 100, "title": "sharp"}, {"font": {"color": "white"}, "group": 2006, "id": 2058, "label": 2058, "shape": "dot", "size": 100, "title": "explosive"}, {"font": {"color": "white"}, "group": 2007, "id": 2059, "label": 2059, "shape": "dot", "size": 100, "title": "furry"}, {"font": {"color": "white"}, "group": 2007, "id": 2060, "label": 2060, "shape": "dot", "size": 100, "title": "woven"}, {"font": {"color": "white"}, "group": 2007, "id": 2061, "label": 2061, "shape": "dot", "size": 100, "title": "bumpy"}, {"font": {"color": "white"}, "group": 2007, "id": 2062, "label": 2062, "shape": "dot", "size": 100, "title": "irregular"}, {"font": {"color": "white"}, "group": 2007, "id": 2063, "label": 2063, "shape": "dot", "size": 100, "title": "smooth"}, {"font": {"color": "white"}, "group": 2007, "id": 2064, "label": 2064, "shape": "dot", "size": 100, "title": "coarse"}, {"font": {"color": "white"}, "group": 2007, "id": 2065, "label": 2065, "shape": "dot", "size": 100, "title": "wet"}, {"font": {"color": "white"}, "group": 2007, "id": 2066, "label": 2066, "shape": "dot", "size": 100, "title": "sandy"}, {"font": {"color": "white"}, "group": 2007, "id": 2067, "label": 2067, "shape": "dot", "size": 100, "title": "unlabeled"}, {"font": {"color": "white"}, "group": 2003, "id": 2068, "label": 2068, "shape": "dot", "size": 100, "title": "wool"}, {"font": {"color": "white"}, "group": 2001, "id": 2069, "label": 2069, "shape": "dot", "size": 100, "title": "tall"}, {"font": {"color": "white"}, "group": 2003, "id": 2070, "label": 2070, "shape": "dot", "size": 100, "title": "nylon"}, {"font": {"color": "white"}, "group": 2001, "id": 2071, "label": 2071, "shape": "dot", "size": 100, "title": "seed-studded surface"}, {"font": {"color": "white"}, "group": 2003, "id": 2072, "label": 2072, "shape": "dot", "size": 100, "title": "wheat flour"}, {"font": {"color": "white"}, "group": 2002, "id": 2073, "label": 2073, "shape": "dot", "size": 100, "title": "brass "}, {"font": {"color": "white"}, "group": 2003, "id": 2074, "label": 2074, "shape": "dot", "size": 100, "title": "talc"}, {"font": {"color": "white"}, "group": 2002, "id": 2075, "label": 2075, "shape": "dot", "size": 100, "title": "fluorescent"}, {"font": {"color": "white"}, "group": 2003, "id": 2076, "label": 2076, "shape": "dot", "size": 100, "title": "transparent"}, {"font": {"color": "white"}, "group": 2001, "id": 2077, "label": 2077, "shape": "dot", "size": 100, "title": "small"}, {"font": {"color": "white"}, "group": 2001, "id": 2078, "label": 2078, "shape": "dot", "size": 100, "title": "rectangular"}, {"font": {"color": "white"}, "group": 2001, "id": 2079, "label": 2079, "shape": "dot", "size": 100, "title": "centre"}, {"font": {"color": "white"}, "group": 2001, "id": 2080, "label": 2080, "shape": "dot", "size": 100, "title": "slope"}, {"font": {"color": "white"}, "group": 2003, "id": 2081, "label": 2081, "shape": "dot", "size": 100, "title": "spring-loaded"}, {"font": {"color": "white"}, "group": 2003, "id": 2082, "label": 2082, "shape": "dot", "size": 100, "title": "concrete"}, {"font": {"color": "white"}, "group": 2003, "id": 2083, "label": 2083, "shape": "dot", "size": 100, "title": "copper"}, {"font": {"color": "white"}, "group": 2003, "id": 2084, "label": 2084, "shape": "dot", "size": 100, "title": "ship"}, {"font": {"color": "white"}, "group": 2001, "id": 2085, "label": 2085, "shape": "dot", "size": 100, "title": "right angles"}, {"font": {"color": "white"}, "group": 2003, "id": 2086, "label": 2086, "shape": "dot", "size": 100, "title": "tabacco"}, {"font": {"color": "white"}, "group": 2001, "id": 2087, "label": 2087, "shape": "dot", "size": 100, "title": "hexagon"}, {"font": {"color": "white"}, "group": 2001, "id": 2088, "label": 2088, "shape": "dot", "size": 100, "title": "square"}, {"font": {"color": "white"}, "group": 2003, "id": 2089, "label": 2089, "shape": "dot", "size": 100, "title": "thread"}, {"font": {"color": "white"}, "group": 2001, "id": 2090, "label": 2090, "shape": "dot", "size": 100, "title": "semi-sphere"}, {"font": {"color": "white"}, "group": 2003, "id": 2091, "label": 2091, "shape": "dot", "size": 100, "title": "gems"}, {"font": {"color": "white"}, "group": 2001, "id": 2092, "label": 2092, "shape": "dot", "size": 100, "title": "threefold"}, {"font": {"color": "white"}, "group": 2003, "id": 2093, "label": 2093, "shape": "dot", "size": 100, "title": "chemicals"}, {"font": {"color": "white"}, "group": 2001, "id": 2094, "label": 2094, "shape": "dot", "size": 100, "title": "graph"}, {"font": {"color": "white"}, "group": 2001, "id": 2095, "label": 2095, "shape": "dot", "size": 100, "title": "horizontal"}, {"font": {"color": "white"}, "group": 2003, "id": 2096, "label": 2096, "shape": "dot", "size": 100, "title": "polished metal"}, {"font": {"color": "white"}, "group": 2001, "id": 2097, "label": 2097, "shape": "dot", "size": 100, "title": "oval"}, {"font": {"color": "white"}, "group": 2001, "id": 2098, "label": 2098, "shape": "dot", "size": 100, "title": "flat"}, {"font": {"color": "white"}, "group": 2001, "id": 2099, "label": 2099, "shape": "dot", "size": 100, "title": "triangular"}, {"font": {"color": "white"}, "group": 2001, "id": 2100, "label": 2100, "shape": "dot", "size": 100, "title": "lens round and rectangular shape"}, {"font": {"color": "white"}, "group": 2001, "id": 2101, "label": 2101, "shape": "dot", "size": 100, "title": "thin sheet of transparent flexible material"}, {"font": {"color": "white"}, "group": 2003, "id": 2102, "label": 2102, "shape": "dot", "size": 100, "title": "copper"}, {"font": {"color": "white"}, "group": 2003, "id": 2103, "label": 2103, "shape": "dot", "size": 100, "title": "brass"}, {"font": {"color": "white"}, "group": 2002, "id": 2104, "label": 2104, "shape": "dot", "size": 100, "title": "vivid"}, {"font": {"color": "white"}, "group": 2001, "id": 2105, "label": 2105, "shape": "dot", "size": 100, "title": "straight"}, {"font": {"color": "white"}, "group": 2001, "id": 2106, "label": 2106, "shape": "dot", "size": 100, "title": "eye-like markings"}, {"font": {"color": "white"}, "group": 2001, "id": 2107, "label": 2107, "shape": "dot", "size": 100, "title": "erected"}, {"font": {"color": "white"}, "group": 2001, "id": 2108, "label": 2108, "shape": "dot", "size": 100, "title": "fanned out"}, {"font": {"color": "white"}, "group": 2001, "id": 2109, "label": 2109, "shape": "dot", "size": 100, "title": "flat"}, {"font": {"color": "white"}, "group": 2001, "id": 2110, "label": 2110, "shape": "dot", "size": 100, "title": "sparse"}, {"font": {"color": "white"}, "group": 2001, "id": 2111, "label": 2111, "shape": "dot", "size": 100, "title": "burst open"}, {"font": {"color": "white"}, "group": 2001, "id": 2112, "label": 2112, "shape": "dot", "size": 100, "title": "semicircle"}, {"font": {"color": "white"}, "group": 2001, "id": 2113, "label": 2113, "shape": "dot", "size": 100, "title": "flat"}, {"font": {"color": "white"}, "group": 2001, "id": 2114, "label": 2114, "shape": "dot", "size": 100, "title": "heart"}, {"font": {"color": "white"}, "group": 2001, "id": 2115, "label": 2115, "shape": "dot", "size": 100, "title": "diamond"}, {"font": {"color": "white"}, "group": 2001, "id": 2116, "label": 2116, "shape": "dot", "size": 100, "title": "leaf"}, {"font": {"color": "white"}, "group": 2001, "id": 2117, "label": 2117, "shape": "dot", "size": 100, "title": "spades "}, {"font": {"color": "white"}, "group": 2003, "id": 2118, "label": 2118, "shape": "dot", "size": 100, "title": "iron"}, {"font": {"color": "white"}, "group": 2003, "id": 2119, "label": 2119, "shape": "dot", "size": 100, "title": "clay"}, {"font": {"color": "white"}, "group": 2001, "id": 2120, "label": 2120, "shape": "dot", "size": 100, "title": "bulb"}, {"font": {"color": "white"}, "group": 2003, "id": 2121, "label": 2121, "shape": "dot", "size": 100, "title": "rubber"}, {"font": {"color": "white"}, "group": 2003, "id": 2122, "label": 2122, "shape": "dot", "size": 100, "title": "lithium"}, {"font": {"color": "white"}, "group": 2003, "id": 2123, "label": 2123, "shape": "dot", "size": 100, "title": "rubber"}, {"font": {"color": "white"}, "group": 2001, "id": 2124, "label": 2124, "shape": "dot", "size": 100, "title": "semicircle"}, {"font": {"color": "white"}, "group": 2001, "id": 2125, "label": 2125, "shape": "dot", "size": 100, "title": "flat"}, {"font": {"color": "white"}, "group": 2001, "id": 2126, "label": 2126, "shape": "dot", "size": 100, "title": "diamond"}, {"font": {"color": "white"}, "group": 2002, "id": 2127, "label": 2127, "shape": "dot", "size": 100, "title": "silver"}, {"font": {"color": "white"}, "group": 2003, "id": 2128, "label": 2128, "shape": "dot", "size": 100, "title": "iron"}, {"font": {"color": "white"}, "group": 2003, "id": 2129, "label": 2129, "shape": "dot", "size": 100, "title": "clay"}, {"font": {"color": "white"}, "group": 2001, "id": 2130, "label": 2130, "shape": "dot", "size": 100, "title": "cleft"}, {"font": {"color": "white"}, "group": 2001, "id": 2131, "label": 2131, "shape": "dot", "size": 100, "title": "centre"}, {"font": {"color": "white"}, "group": 2003, "id": 2132, "label": 2132, "shape": "dot", "size": 100, "title": "brittle"}, {"font": {"color": "white"}, "group": 2003, "id": 2133, "label": 2133, "shape": "dot", "size": 100, "title": "waste"}, {"font": {"color": "white"}, "group": 2003, "id": 2134, "label": 2134, "shape": "dot", "size": 100, "title": "tissue"}, {"font": {"color": "white"}, "group": 2001, "id": 2135, "label": 2135, "shape": "dot", "size": 100, "title": "backswpt horns"}, {"font": {"color": "white"}, "group": 2003, "id": 2136, "label": 2136, "shape": "dot", "size": 100, "title": "copper"}, {"font": {"color": "white"}, "group": 2003, "id": 2137, "label": 2137, "shape": "dot", "size": 100, "title": "zinc"}, {"font": {"color": "white"}, "group": 2001, "id": 2138, "label": 2138, "shape": "dot", "size": 100, "title": "thin"}, {"font": {"color": "white"}, "group": 2001, "id": 2139, "label": 2139, "shape": "dot", "size": 100, "title": "flat"}, {"font": {"color": "white"}, "group": 2003, "id": 2140, "label": 2140, "shape": "dot", "size": 100, "title": "stiffer ink"}, {"font": {"color": "white"}, "group": 2001, "id": 2141, "label": 2141, "shape": "dot", "size": 100, "title": "flat-bottomed"}, {"font": {"color": "white"}, "group": 2003, "id": 2143, "label": 2143, "shape": "dot", "size": 100, "title": "water"}, {"font": {"color": "white"}, "group": 2003, "id": 2144, "label": 2144, "shape": "dot", "size": 100, "title": "nylon"}, {"font": {"color": "white"}, "group": 2003, "id": 2145, "label": 2145, "shape": "dot", "size": 100, "title": "hemp"}, {"font": {"color": "white"}, "group": 2003, "id": 2146, "label": 2146, "shape": "dot", "size": 100, "title": "sisal"}, {"font": {"color": "white"}, "group": 2001, "id": 2147, "label": 2147, "shape": "dot", "size": 100, "title": "narrow bottom"}, {"font": {"color": "white"}, "group": 2001, "id": 2148, "label": 2148, "shape": "dot", "size": 100, "title": "wide top"}, {"font": {"color": "white"}, "group": 2001, "id": 2149, "label": 2149, "shape": "dot", "size": 100, "title": "oval"}, {"font": {"color": "white"}, "group": 2003, "id": 2150, "label": 2150, "shape": "dot", "size": 100, "title": "water"}, {"font": {"color": "white"}, "group": 2001, "id": 2151, "label": 2151, "shape": "dot", "size": 100, "title": "moulding"}, {"font": {"color": "white"}, "group": 2001, "id": 2152, "label": 2152, "shape": "dot", "size": 100, "title": "curve fin"}, {"font": {"color": "white"}, "group": 2001, "id": 2153, "label": 2153, "shape": "dot", "size": 100, "title": "barrel"}, {"font": {"color": "white"}, "group": 2001, "id": 2154, "label": 2154, "shape": "dot", "size": 100, "title": "upright"}, {"font": {"color": "white"}, "group": 2003, "id": 2155, "label": 2155, "shape": "dot", "size": 100, "title": "vertebrates"}, {"font": {"color": "white"}, "group": 2000, "id": 12000, "label": 12000, "shape": "dot", "size": 100, "title": "null"}, {"font": {"color": "white"}, "group": 3000, "id": 3000, "label": 3000, "shape": "dot", "size": 100, "title": "food"}, {"font": {"color": "white"}, "group": 3000, "id": 3001, "label": 3001, "shape": "dot", "size": 100, "title": "tool"}, {"font": {"color": "white"}, "group": 3000, "id": 3002, "label": 3002, "shape": "dot", "size": 100, "title": "place"}, {"font": {"color": "white"}, "group": 3000, "id": 3003, "label": 3003, "shape": "dot", "size": 100, "title": "device"}, {"font": {"color": "white"}, "group": 3000, "id": 3004, "label": 3004, "shape": "dot", "size": 100, "title": "structure"}, {"font": {"color": "white"}, "group": 3000, "id": 3005, "label": 3005, "shape": "dot", "size": 100, "title": "plant"}, {"font": {"color": "white"}, "group": 3000, "id": 3006, "label": 3006, "shape": "dot", "size": 100, "title": "term"}, {"font": {"color": "white"}, "group": 3000, "id": 3007, "label": 3007, "shape": "dot", "size": 100, "title": "material"}, {"font": {"color": "white"}, "group": 3000, "id": 3008, "label": 3008, "shape": "dot", "size": 100, "title": "garment"}, {"font": {"color": "white"}, "group": 3000, "id": 3009, "label": 3009, "shape": "dot", "size": 100, "title": "bodypart"}, {"font": {"color": "white"}, "group": 3000, "id": 3010, "label": 3010, "shape": "dot", "size": 100, "title": "vehicle"}, {"font": {"color": "white"}, "group": 3000, "id": 3011, "label": 3011, "shape": "dot", "size": 100, "title": "furniture"}, {"font": {"color": "white"}, "group": 3000, "id": 3012, "label": 3012, "shape": "dot", "size": 100, "title": "instrument"}, {"font": {"color": "white"}, "group": 3000, "id": 3013, "label": 3013, "shape": "dot", "size": 100, "title": "animal"}, {"font": {"color": "white"}, "group": 3000, "id": 3014, "label": 3014, "shape": "dot", "size": 100, "title": "insect"}, {"font": {"color": "white"}, "group": 3000, "id": 3015, "label": 3015, "shape": "dot", "size": 100, "title": "property"}, {"font": {"color": "white"}, "group": 3000, "id": 3016, "label": 3016, "shape": "dot", "size": 100, "title": "action"}, {"font": {"color": "white"}, "group": 3000, "id": 3017, "label": 3017, "shape": "dot", "size": 100, "title": "object"}, {"font": {"color": "white"}, "group": 3000, "id": 3018, "label": 3018, "shape": "dot", "size": 100, "title": "title"}, {"font": {"color": "white"}, "group": 3000, "id": 3019, "label": 3019, "shape": "dot", "size": 100, "title": "consumable"}, {"font": {"color": "white"}, "group": 3000, "id": 3020, "label": 3020, "shape": "dot", "size": 100, "title": "propernoun"}]);
+                  edges = new vis.DataSet([{"from": 1001, "to": 3017, "weight": 1.0}, {"from": 1001, "to": 2035, "weight": 1.0}, {"from": 1002, "to": 3017, "weight": 1.0}, {"from": 1002, "to": 2091, "weight": 0.5}, {"from": 1002, "to": 2045, "weight": 0.5}, {"from": 1007, "to": 3017, "weight": 1.0}, {"from": 1007, "to": 2100, "weight": 1.0}, {"from": 1009, "to": 3004, "weight": 0.6153846153846154}, {"from": 1011, "to": 3007, "weight": 0.6}, {"from": 1011, "to": 3008, "weight": 0.4}, {"from": 1012, "to": 3001, "weight": 1.0}, {"from": 1012, "to": 2015, "weight": 1.0}, {"from": 1015, "to": 3000, "weight": 0.75}, {"from": 1017, "to": 3001, "weight": 1.0}, {"from": 1017, "to": 2045, "weight": 0.5}, {"from": 1017, "to": 2039, "weight": 0.5}, {"from": 1018, "to": 3008, "weight": 0.4}, {"from": 1018, "to": 3003, "weight": 0.6}, {"from": 1019, "to": 3008, "weight": 0.6363636363636364}, {"from": 1019, "to": 3007, "weight": 0.36363636363636365}, {"from": 1020, "to": 3001, "weight": 0.75}, {"from": 1021, "to": 3016, "weight": 1.0}, {"from": 1021, "to": 2045, "weight": 1.0}, {"from": 1022, "to": 3006, "weight": 0.5}, {"from": 1023, "to": 3011, "weight": 1.0}, {"from": 1023, "to": 2032, "weight": 0.5}, {"from": 1023, "to": 2044, "weight": 0.5}, {"from": 1029, "to": 3016, "weight": 0.3333333333333333}, {"from": 1029, "to": 3006, "weight": 0.3333333333333333}, {"from": 1029, "to": 3002, "weight": 0.3333333333333333}, {"from": 1029, "to": 2080, "weight": 0.3333333333333333}, {"from": 1029, "to": 2094, "weight": 0.3333333333333333}, {"from": 1029, "to": 2030, "weight": 0.3333333333333333}, {"from": 1034, "to": 3016, "weight": 1.0}, {"from": 1034, "to": 2143, "weight": 1.0}, {"from": 1035, "to": 3003, "weight": 1.0}, {"from": 1036, "to": 3007, "weight": 0.75}, {"from": 1038, "to": 3016, "weight": 0.5}, {"from": 1038, "to": 3017, "weight": 0.5}, {"from": 1038, "to": 2037, "weight": 0.5}, {"from": 1038, "to": 2006, "weight": 0.5}, {"from": 1039, "to": 3016, "weight": 1.0}, {"from": 1039, "to": 2037, "weight": 1.0}, {"from": 1041, "to": 3017, "weight": 0.6666666666666666}, {"from": 1041, "to": 3014, "weight": 0.3333333333333333}, {"from": 1041, "to": 2036, "weight": 0.3333333333333333}, {"from": 1041, "to": 2047, "weight": 0.3333333333333333}, {"from": 1041, "to": 2133, "weight": 0.3333333333333333}, {"from": 1042, "to": 3016, "weight": 1.0}, {"from": 1042, "to": 2042, "weight": 1.0}, {"from": 1043, "to": 3013, "weight": 0.5}, {"from": 1043, "to": 3010, "weight": 0.5}, {"from": 1045, "to": 3004, "weight": 0.4}, {"from": 1045, "to": 3003, "weight": 0.6}, {"from": 1046, "to": 3003, "weight": 1.0}, {"from": 1046, "to": 2042, "weight": 1.0}, {"from": 1047, "to": 3003, "weight": 1.0}, {"from": 1047, "to": 2042, "weight": 1.0}, {"from": 1049, "to": 3012, "weight": 1.0}, {"from": 1049, "to": 2075, "weight": 0.5}, {"from": 1049, "to": 2076, "weight": 0.5}, {"from": 1050, "to": 3006, "weight": 0.5}, {"from": 1050, "to": 3013, "weight": 0.5}, {"from": 1050, "to": 2011, "weight": 0.5}, {"from": 1050, "to": 2104, "weight": 0.5}, {"from": 1063, "to": 3017, "weight": 1.0}, {"from": 1063, "to": 2045, "weight": 0.3333333333333333}, {"from": 1063, "to": 2032, "weight": 0.3333333333333333}, {"from": 1063, "to": 2006, "weight": 0.3333333333333333}, {"from": 1064, "to": 3003, "weight": 1.0}, {"from": 1064, "to": 2011, "weight": 0.3333333333333333}, {"from": 1064, "to": 2019, "weight": 0.3333333333333333}, {"from": 1064, "to": 2033, "weight": 0.3333333333333333}, {"from": 1067, "to": 3003, "weight": 1.0}, {"from": 1067, "to": 2095, "weight": 1.0}, {"from": 1070, "to": 3001, "weight": 1.0}, {"from": 1070, "to": 2096, "weight": 1.0}, {"from": 1074, "to": 3013, "weight": 0.3333333333333333}, {"from": 1074, "to": 3009, "weight": 0.6666666666666666}, {"from": 1074, "to": 2028, "weight": 0.3333333333333333}, {"from": 1074, "to": 2097, "weight": 0.3333333333333333}, {"from": 1074, "to": 2019, "weight": 0.3333333333333333}, {"from": 1075, "to": 3017, "weight": 1.0}, {"from": 1075, "to": 2032, "weight": 1.0}, {"from": 1077, "to": 3017, "weight": 1.0}, {"from": 1077, "to": 2045, "weight": 1.0}, {"from": 1078, "to": 3012, "weight": 1.0}, {"from": 1081, "to": 3008, "weight": 0.5555555555555556}, {"from": 1081, "to": 3007, "weight": 0.4444444444444444}, {"from": 1088, "to": 3004, "weight": 1.0}, {"from": 1088, "to": 2143, "weight": 1.0}, {"from": 1090, "to": 3017, "weight": 1.0}, {"from": 1090, "to": 2100, "weight": 1.0}, {"from": 1104, "to": 3017, "weight": 0.8333333333333334}, {"from": 1108, "to": 3003, "weight": 1.0}, {"from": 1108, "to": 2037, "weight": 1.0}, {"from": 1114, "to": 3012, "weight": 1.0}, {"from": 1114, "to": 2112, "weight": 0.5}, {"from": 1114, "to": 2098, "weight": 0.5}, {"from": 1121, "to": 3001, "weight": 0.5}, {"from": 1121, "to": 3012, "weight": 0.5}, {"from": 1121, "to": 2006, "weight": 0.5}, {"from": 1121, "to": 2140, "weight": 0.5}, {"from": 1122, "to": 3017, "weight": 0.5}, {"from": 1122, "to": 3001, "weight": 0.5}, {"from": 1122, "to": 2019, "weight": 0.5}, {"from": 1122, "to": 2006, "weight": 0.5}, {"from": 1123, "to": 3012, "weight": 1.0}, {"from": 1123, "to": 2147, "weight": 0.5}, {"from": 1123, "to": 2148, "weight": 0.5}, {"from": 1125, "to": 3013, "weight": 1.0}, {"from": 1125, "to": 2104, "weight": 1.0}, {"from": 1132, "to": 3000, "weight": 1.0}, {"from": 1135, "to": 3017, "weight": 1.0}, {"from": 1135, "to": 2019, "weight": 1.0}, {"from": 1137, "to": 3017, "weight": 1.0}, {"from": 1137, "to": 2121, "weight": 0.5}, {"from": 1137, "to": 2045, "weight": 0.5}, {"from": 1139, "to": 3010, "weight": 1.0}, {"from": 1139, "to": 2045, "weight": 1.0}, {"from": 1156, "to": 3009, "weight": 1.0}, {"from": 1156, "to": 2011, "weight": 1.0}, {"from": 1165, "to": 3004, "weight": 1.0}, {"from": 1165, "to": 2143, "weight": 1.0}, {"from": 1169, "to": 3007, "weight": 1.0}, {"from": 1169, "to": 2065, "weight": 1.0}, {"from": 3011, "to": 2032, "weight": 0.3333333333333333}, {"from": 3011, "to": 2044, "weight": 0.3333333333333333}, {"from": 3019, "to": 1012, "weight": 1.0}, {"from": 3020, "to": 1042, "weight": 0.5714285714285714}, {"from": 2001, "to": 3017, "weight": 0.5}, {"from": 2001, "to": 3004, "weight": 0.5}, {"from": 2004, "to": 3000, "weight": 0.6666666666666666}, {"from": 2004, "to": 3017, "weight": 0.3333333333333333}, {"from": 2005, "to": 3002, "weight": 1.0}, {"from": 2006, "to": 3012, "weight": 0.4}, {"from": 2007, "to": 3017, "weight": 0.3333333333333333}, {"from": 2007, "to": 3013, "weight": 0.3333333333333333}, {"from": 2007, "to": 3002, "weight": 0.3333333333333333}, {"from": 2008, "to": 3003, "weight": 1.0}, {"from": 2009, "to": 3017, "weight": 0.5}, {"from": 2009, "to": 3009, "weight": 0.5}, {"from": 2010, "to": 3012, "weight": 1.0}, {"from": 2013, "to": 3003, "weight": 0.5}, {"from": 2013, "to": 3007, "weight": 0.5}, {"from": 2014, "to": 3008, "weight": 0.5}, {"from": 2014, "to": 3000, "weight": 0.5}, {"from": 2016, "to": 3000, "weight": 1.0}, {"from": 2017, "to": 3012, "weight": 1.0}, {"from": 2021, "to": 3000, "weight": 0.6666666666666666}, {"from": 2022, "to": 3006, "weight": 0.3333333333333333}, {"from": 2022, "to": 3000, "weight": 0.3333333333333333}, {"from": 2022, "to": 3017, "weight": 0.3333333333333333}, {"from": 2023, "to": 3013, "weight": 1.0}, {"from": 2024, "to": 3013, "weight": 0.4444444444444444}, {"from": 2024, "to": 3000, "weight": 0.3333333333333333}, {"from": 2025, "to": 3015, "weight": 1.0}, {"from": 2026, "to": 3000, "weight": 1.0}, {"from": 2027, "to": 3005, "weight": 0.5}, {"from": 2027, "to": 3017, "weight": 0.5}, {"from": 2030, "to": 3013, "weight": 0.7142857142857143}, {"from": 2032, "to": 3012, "weight": 0.3125}, {"from": 2032, "to": 3017, "weight": 0.4375}, {"from": 2033, "to": 3008, "weight": 0.3333333333333333}, {"from": 2033, "to": 3003, "weight": 0.3333333333333333}, {"from": 2033, "to": 3018, "weight": 0.3333333333333333}, {"from": 2034, "to": 3017, "weight": 0.5}, {"from": 2034, "to": 3001, "weight": 0.5}, {"from": 2035, "to": 3017, "weight": 1.0}, {"from": 2036, "to": 3017, "weight": 1.0}, {"from": 2037, "to": 3003, "weight": 0.4}, {"from": 2038, "to": 3017, "weight": 1.0}, {"from": 2039, "to": 3012, "weight": 0.4444444444444444}, {"from": 2039, "to": 3001, "weight": 0.4444444444444444}, {"from": 2040, "to": 3008, "weight": 0.75}, {"from": 2043, "to": 3008, "weight": 0.5}, {"from": 2043, "to": 3004, "weight": 0.5}, {"from": 2044, "to": 3008, "weight": 0.3333333333333333}, {"from": 2044, "to": 3007, "weight": 0.3333333333333333}, {"from": 2045, "to": 3017, "weight": 0.3333333333333333}, {"from": 2047, "to": 3014, "weight": 1.0}, {"from": 2049, "to": 3013, "weight": 1.0}, {"from": 2051, "to": 3000, "weight": 1.0}, {"from": 2063, "to": 3009, "weight": 0.5}, {"from": 2063, "to": 3008, "weight": 0.5}, {"from": 2065, "to": 3007, "weight": 1.0}, {"from": 2068, "to": 3008, "weight": 1.0}, {"from": 2069, "to": 3004, "weight": 1.0}, {"from": 2070, "to": 3008, "weight": 0.5}, {"from": 2070, "to": 3001, "weight": 0.5}, {"from": 2071, "to": 3000, "weight": 1.0}, {"from": 2072, "to": 3000, "weight": 1.0}, {"from": 2074, "to": 3004, "weight": 1.0}, {"from": 2075, "to": 3012, "weight": 1.0}, {"from": 2076, "to": 3012, "weight": 1.0}, {"from": 2077, "to": 3017, "weight": 1.0}, {"from": 2078, "to": 3012, "weight": 1.0}, {"from": 2079, "to": 3015, "weight": 0.5}, {"from": 2079, "to": 3007, "weight": 0.5}, {"from": 2080, "to": 3016, "weight": 1.0}, {"from": 2081, "to": 3003, "weight": 1.0}, {"from": 2082, "to": 3008, "weight": 1.0}, {"from": 2083, "to": 3006, "weight": 0.3333333333333333}, {"from": 2083, "to": 3003, "weight": 0.3333333333333333}, {"from": 2083, "to": 3007, "weight": 0.3333333333333333}, {"from": 2084, "to": 3004, "weight": 1.0}, {"from": 2085, "to": 3002, "weight": 1.0}, {"from": 2086, "to": 3018, "weight": 1.0}, {"from": 2087, "to": 3004, "weight": 1.0}, {"from": 2088, "to": 3004, "weight": 1.0}, {"from": 2089, "to": 3013, "weight": 1.0}, {"from": 2090, "to": 3010, "weight": 1.0}, {"from": 2091, "to": 3017, "weight": 1.0}, {"from": 2092, "to": 3005, "weight": 1.0}, {"from": 2093, "to": 3003, "weight": 1.0}, {"from": 2094, "to": 3006, "weight": 1.0}, {"from": 2095, "to": 3003, "weight": 1.0}, {"from": 2096, "to": 3001, "weight": 1.0}, {"from": 2097, "to": 3009, "weight": 0.5}, {"from": 2097, "to": 3017, "weight": 0.5}, {"from": 2098, "to": 3012, "weight": 0.5}, {"from": 2099, "to": 3017, "weight": 1.0}, {"from": 2100, "to": 3017, "weight": 1.0}, {"from": 2101, "to": 3012, "weight": 1.0}, {"from": 2104, "to": 3013, "weight": 1.0}, {"from": 2105, "to": 3015, "weight": 1.0}, {"from": 2106, "to": 3013, "weight": 1.0}, {"from": 2107, "to": 3013, "weight": 1.0}, {"from": 2108, "to": 3013, "weight": 1.0}, {"from": 2110, "to": 3013, "weight": 1.0}, {"from": 2111, "to": 3000, "weight": 1.0}, {"from": 2112, "to": 3012, "weight": 1.0}, {"from": 2114, "to": 3006, "weight": 1.0}, {"from": 2115, "to": 3006, "weight": 0.5}, {"from": 2115, "to": 3015, "weight": 0.5}, {"from": 2116, "to": 3006, "weight": 1.0}, {"from": 2117, "to": 3006, "weight": 1.0}, {"from": 2118, "to": 3017, "weight": 1.0}, {"from": 2119, "to": 3017, "weight": 1.0}, {"from": 2120, "to": 3017, "weight": 1.0}, {"from": 2121, "to": 3017, "weight": 1.0}, {"from": 2122, "to": 3007, "weight": 1.0}, {"from": 2127, "to": 3001, "weight": 1.0}, {"from": 2130, "to": 3007, "weight": 1.0}, {"from": 2133, "to": 3017, "weight": 1.0}, {"from": 2134, "to": 3009, "weight": 1.0}, {"from": 2135, "to": 3013, "weight": 1.0}, {"from": 2137, "to": 3007, "weight": 1.0}, {"from": 2138, "to": 3007, "weight": 1.0}, {"from": 2140, "to": 3012, "weight": 1.0}, {"from": 2141, "to": 3010, "weight": 1.0}, {"from": 2143, "to": 3004, "weight": 0.5}, {"from": 2143, "to": 3016, "weight": 0.5}, {"from": 2145, "to": 3001, "weight": 1.0}, {"from": 2146, "to": 3001, "weight": 1.0}, {"from": 2147, "to": 3012, "weight": 1.0}, {"from": 2148, "to": 3012, "weight": 1.0}, {"from": 2151, "to": 3007, "weight": 1.0}, {"from": 2152, "to": 3013, "weight": 1.0}, {"from": 2153, "to": 3012, "weight": 1.0}, {"from": 2154, "to": 3007, "weight": 1.0}, {"from": 2155, "to": 3009, "weight": 1.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+                    network.on("selectNode", neighbourhoodHighlight);
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

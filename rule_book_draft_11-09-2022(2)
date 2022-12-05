@@ -1,0 +1,129 @@
+inf_has_affordance(X, contain_liquid, Y) :- (is_a(X, object); has_property(X, ceramic, Z)), has_affordance(A, contain_liquid, Y).
+inf_has_affordance(X, contain_solid, Y) :- (is_a(X, object)), has_affordance(A, contain_solid, Y).
+inf_has_affordance(X, display, Y) :- (is_a(X, object); has_property(X, lens round and rectangular shape, Z)), has_affordance(A, display, Y).
+inf_has_affordance(X, hold, Y) :- (is_a(X, structure)), has_affordance(A, hold, Y).
+inf_has_affordance(X, protect, Y) :- (is_a(X, material)), has_affordance(A, protect, Y).
+inf_has_affordance(X, clean, Y) :- (is_a(X, tool); has_property(X, long, Z)), has_affordance(A, clean, Y).
+inf_has_affordance(X, energy_source, Y) :- (is_a(X, food)), has_affordance(A, energy_source, Y).
+inf_has_affordance(X, poke, Y) :- (is_a(X, tool)), has_affordance(A, poke, Y).
+inf_has_affordance(X, warmth, Y) :- (is_a(X, device)), has_affordance(A, warmth, Y).
+inf_has_affordance(X, cover, Y) :- (is_a(X, garment)), has_affordance(A, cover, Y).
+inf_has_affordance(X, secure, Y) :- (is_a(X, tool)), has_affordance(A, secure, Y).
+inf_has_affordance(X, support, Y) :- (is_a(X, action); has_property(X, metal, Z)), has_affordance(A, support, Y).
+inf_has_affordance(X, sit, Y) :- (is_a(X, furniture)), has_affordance(A, sit, Y).
+inf_has_affordance(X, carrying_of_people_or_things, Y) :- (is_a(X, action); has_property(X, water, Z)), has_affordance(A, carrying_of_people_or_things, Y).
+inf_has_affordance(X, transmitting, Y) :- (is_a(X, device)), has_affordance(A, transmitting, Y).
+inf_has_affordance(X, flat_surface, Y) :- (is_a(X, material)), has_affordance(A, flat_surface, Y).
+inf_has_affordance(X, carry_people, Y) :- (is_a(X, action); has_property(X, steel, Z)), has_affordance(A, carry_people, Y).
+inf_has_affordance(X, refuse, Y) :- (is_a(X, object)), has_affordance(A, refuse, Y).
+inf_has_affordance(X, moving, Y) :- (is_a(X, action); has_property(X, stone, Z)), has_affordance(A, moving, Y).
+inf_has_affordance(X, drive, Y) :- (is_a(X, device)), has_affordance(A, drive, Y).
+inf_has_affordance(X, throwing, Y) :- (is_a(X, device); has_property(X, stone, Z)), has_affordance(A, throwing, Y).
+inf_has_affordance(X, hurling, Y) :- (is_a(X, device); has_property(X, stone, Z)), has_affordance(A, hurling, Y).
+inf_has_affordance(X, illustrating, Y) :- (is_a(X, instrument)), has_affordance(A, illustrating, Y).
+inf_has_affordance(X, gives_smoke, Y) :- (is_a(X, object)), has_affordance(A, gives_smoke, Y).
+inf_has_affordance(X, burner, Y) :- (is_a(X, device)), has_affordance(A, burner, Y).
+inf_has_affordance(X, measurement, Y) :- (is_a(X, device); has_property(X, horizontal, Z)), has_affordance(A, measurement, Y).
+inf_has_affordance(X, sewing, Y) :- (is_a(X, tool); has_property(X, polished metal, Z)), has_affordance(A, sewing, Y).
+inf_has_affordance(X, eat, Y) :- (is_a(X, bodypart)), has_affordance(A, eat, Y).
+inf_has_affordance(X, fixing, Y) :- (is_a(X, object); has_property(X, wood, Z)), has_affordance(A, fixing, Y).
+inf_has_affordance(X, control, Y) :- (is_a(X, object); has_property(X, metal, Z)), has_affordance(A, control, Y).
+inf_has_affordance(X, music, Y) :- (is_a(X, instrument)), has_affordance(A, music, Y).
+inf_has_affordance(X, worn, Y) :- (is_a(X, garment)), has_affordance(A, worn, Y).
+inf_has_affordance(X, place, Y) :- (is_a(X, structure); has_property(X, water, Z)), has_affordance(A, place, Y).
+inf_has_affordance(X, framing_focusing_the_picture, Y) :- (is_a(X, object); has_property(X, lens round and rectangular shape, Z)), has_affordance(A, framing_focusing_the_picture, Y).
+inf_has_affordance(X, decorative, Y) :- (is_a(X, object)), has_affordance(A, decorative, Y).
+inf_has_affordance(X, regulator, Y) :- (is_a(X, device); has_property(X, steel, Z)), has_affordance(A, regulator, Y).
+inf_has_affordance(X, measuring, Y) :- (is_a(X, instrument)), has_affordance(A, measuring, Y).
+inf_has_affordance(X, convey, Y) :- (is_a(X, instrument)), has_affordance(A, convey, Y).
+inf_has_affordance(X, cage_bird, Y) :- (is_a(X, animal); has_property(X, vivid, Z)), has_affordance(A, cage_bird, Y).
+inf_has_affordance(X, making_cider, Y) :- (is_a(X, food)), has_affordance(A, making_cider, Y).
+inf_has_affordance(X, disaster, Y) :- (is_a(X, object); has_property(X, white, Z)), has_affordance(A, disaster, Y).
+inf_has_affordance(X, piercing, Y) :- (is_a(X, object)), has_affordance(A, piercing, Y).
+inf_has_affordance(X, fly, Y) :- (is_a(X, vehicle); has_property(X, metal, Z)), has_affordance(A, fly, Y).
+inf_has_affordance(X, underground-storage-organ, Y) :- (is_a(X, bodypart); has_property(X, round, Z)), has_affordance(A, underground-storage-organ, Y).
+inf_has_affordance(X, flowing_to_lake, Y) :- (is_a(X, structure); has_property(X, water, Z)), has_affordance(A, flowing_to_lake, Y).
+inf_has_affordance(X, lubricant, Y) :- (is_a(X, material); has_property(X, wet, Z)), has_affordance(A, lubricant, Y).
+inf_is_a(X, consumable) :- (has_affordance(X, clean, A); 
+inf_is_a(X, propernoun) :- (has_affordance(X, moving, A); 
+inf_has_property(X, sphere, Y) :- (is_a(X, food)), has_property(A, sphere, Y).
+inf_has_property(X, cube, Y) :- (is_a(X, place)), has_property(A, cube, Y).
+inf_has_property(X, cuboid, Y) :- (is_a(X, device)), has_property(A, cuboid, Y).
+inf_has_property(X, bowl, Y) :- (is_a(X, instrument)), has_property(A, bowl, Y).
+inf_has_property(X, thin-rod, Y) :- (is_a(X, food)), has_property(A, thin-rod, Y).
+inf_has_property(X, thick-rod, Y) :- (is_a(X, instrument)), has_property(A, thick-rod, Y).
+inf_has_property(X, yellow, Y) :- (is_a(X, food)), has_property(A, yellow, Y).
+inf_has_property(X, blue, Y) :- (is_a(X, animal)), has_property(A, blue, Y).
+inf_has_property(X, clear, Y) :- (is_a(X, property)), has_property(A, clear, Y).
+inf_has_property(X, purple, Y) :- (is_a(X, food)), has_property(A, purple, Y).
+inf_has_property(X, grey, Y) :- (is_a(X, animal)), has_property(A, grey, Y).
+inf_has_property(X, ceramic, Y) :- (is_a(X, object)), has_property(A, ceramic, Y).
+inf_has_property(X, paper, Y) :- (is_a(X, object)), has_property(A, paper, Y).
+inf_has_property(X, cardboard, Y) :- (is_a(X, object)), has_property(A, cardboard, Y).
+inf_has_property(X, fabric, Y) :- (is_a(X, garment)), has_property(A, fabric, Y).
+inf_has_property(X, light, Y) :- (is_a(X, insect)), has_property(A, light, Y).
+inf_has_property(X, heavy, Y) :- (is_a(X, animal)), has_property(A, heavy, Y).
+inf_has_property(X, soft, Y) :- (is_a(X, food)), has_property(A, soft, Y).
+inf_has_property(X, wet, Y) :- (is_a(X, material)), has_property(A, wet, Y).
+inf_has_property(X, wool, Y) :- (is_a(X, garment)), has_property(A, wool, Y).
+inf_has_property(X, tall, Y) :- (is_a(X, structure)), has_property(A, tall, Y).
+inf_has_property(X, seed-studded_surface, Y) :- (is_a(X, food)), has_property(A, seed-studded_surface, Y).
+inf_has_property(X, wheat_flour, Y) :- (is_a(X, food)), has_property(A, wheat_flour, Y).
+inf_has_property(X, talc, Y) :- (is_a(X, structure)), has_property(A, talc, Y).
+inf_has_property(X, fluorescent, Y) :- (is_a(X, instrument)), has_property(A, fluorescent, Y).
+inf_has_property(X, transparent, Y) :- (is_a(X, instrument)), has_property(A, transparent, Y).
+inf_has_property(X, small, Y) :- (is_a(X, object)), has_property(A, small, Y).
+inf_has_property(X, rectangular, Y) :- (is_a(X, instrument)), has_property(A, rectangular, Y).
+inf_has_property(X, slope, Y) :- (is_a(X, action)), has_property(A, slope, Y).
+inf_has_property(X, spring-loaded, Y) :- (is_a(X, device)), has_property(A, spring-loaded, Y).
+inf_has_property(X, concrete, Y) :- (is_a(X, garment)), has_property(A, concrete, Y).
+inf_has_property(X, ship, Y) :- (is_a(X, structure)), has_property(A, ship, Y).
+inf_has_property(X, right_angles, Y) :- (is_a(X, place)), has_property(A, right_angles, Y).
+inf_has_property(X, tabacco, Y) :- (is_a(X, title)), has_property(A, tabacco, Y).
+inf_has_property(X, hexagon, Y) :- (is_a(X, structure)), has_property(A, hexagon, Y).
+inf_has_property(X, square, Y) :- (is_a(X, structure)), has_property(A, square, Y).
+inf_has_property(X, thread, Y) :- (is_a(X, animal)), has_property(A, thread, Y).
+inf_has_property(X, semi-sphere, Y) :- (is_a(X, vehicle)), has_property(A, semi-sphere, Y).
+inf_has_property(X, gems, Y) :- (is_a(X, object)), has_property(A, gems, Y).
+inf_has_property(X, threefold, Y) :- (is_a(X, plant)), has_property(A, threefold, Y).
+inf_has_property(X, chemicals, Y) :- (is_a(X, device)), has_property(A, chemicals, Y).
+inf_has_property(X, graph, Y) :- (is_a(X, term)), has_property(A, graph, Y).
+inf_has_property(X, horizontal, Y) :- (is_a(X, device)), has_property(A, horizontal, Y).
+inf_has_property(X, polished_metal, Y) :- (is_a(X, tool)), has_property(A, polished_metal, Y).
+inf_has_property(X, triangular, Y) :- (is_a(X, object)), has_property(A, triangular, Y).
+inf_has_property(X, lens_round_and_rectangular_shape, Y) :- (is_a(X, object)), has_property(A, lens_round_and_rectangular_shape, Y).
+inf_has_property(X, thin_sheet_of_transparent_flexible_material, Y) :- (is_a(X, instrument)), has_property(A, thin_sheet_of_transparent_flexible_material, Y).
+inf_has_property(X, vivid, Y) :- (is_a(X, animal)), has_property(A, vivid, Y).
+inf_has_property(X, straight, Y) :- (is_a(X, property)), has_property(A, straight, Y).
+inf_has_property(X, eye-like_markings, Y) :- (is_a(X, animal)), has_property(A, eye-like_markings, Y).
+inf_has_property(X, erected, Y) :- (is_a(X, animal)), has_property(A, erected, Y).
+inf_has_property(X, fanned_out, Y) :- (is_a(X, animal)), has_property(A, fanned_out, Y).
+inf_has_property(X, sparse, Y) :- (is_a(X, animal)), has_property(A, sparse, Y).
+inf_has_property(X, burst_open, Y) :- (is_a(X, food)), has_property(A, burst_open, Y).
+inf_has_property(X, semicircle, Y) :- (is_a(X, instrument)), has_property(A, semicircle, Y).
+inf_has_property(X, heart, Y) :- (is_a(X, term)), has_property(A, heart, Y).
+inf_has_property(X, leaf, Y) :- (is_a(X, term)), has_property(A, leaf, Y).
+inf_has_property(X, spades_, Y) :- (is_a(X, term)), has_property(A, spades_, Y).
+inf_has_property(X, iron, Y) :- (is_a(X, object)), has_property(A, iron, Y).
+inf_has_property(X, clay, Y) :- (is_a(X, object)), has_property(A, clay, Y).
+inf_has_property(X, bulb, Y) :- (is_a(X, object)), has_property(A, bulb, Y).
+inf_has_property(X, rubber, Y) :- (is_a(X, object)), has_property(A, rubber, Y).
+inf_has_property(X, lithium, Y) :- (is_a(X, material)), has_property(A, lithium, Y).
+inf_has_property(X, silver, Y) :- (is_a(X, tool)), has_property(A, silver, Y).
+inf_has_property(X, cleft, Y) :- (is_a(X, material)), has_property(A, cleft, Y).
+inf_has_property(X, waste, Y) :- (is_a(X, object)), has_property(A, waste, Y).
+inf_has_property(X, tissue, Y) :- (is_a(X, bodypart)), has_property(A, tissue, Y).
+inf_has_property(X, backswpt_horns, Y) :- (is_a(X, animal)), has_property(A, backswpt_horns, Y).
+inf_has_property(X, zinc, Y) :- (is_a(X, material)), has_property(A, zinc, Y).
+inf_has_property(X, thin, Y) :- (is_a(X, material)), has_property(A, thin, Y).
+inf_has_property(X, stiffer_ink, Y) :- (is_a(X, instrument)), has_property(A, stiffer_ink, Y).
+inf_has_property(X, flat-bottomed, Y) :- (is_a(X, vehicle)), has_property(A, flat-bottomed, Y).
+inf_has_property(X, hemp, Y) :- (is_a(X, tool)), has_property(A, hemp, Y).
+inf_has_property(X, sisal, Y) :- (is_a(X, tool)), has_property(A, sisal, Y).
+inf_has_property(X, narrow_bottom, Y) :- (is_a(X, instrument)), has_property(A, narrow_bottom, Y).
+inf_has_property(X, wide_top, Y) :- (is_a(X, instrument)), has_property(A, wide_top, Y).
+inf_has_property(X, moulding, Y) :- (is_a(X, material)), has_property(A, moulding, Y).
+inf_has_property(X, curve_fin, Y) :- (is_a(X, animal)), has_property(A, curve_fin, Y).
+inf_has_property(X, barrel, Y) :- (is_a(X, instrument)), has_property(A, barrel, Y).
+inf_has_property(X, upright, Y) :- (is_a(X, material)), has_property(A, upright, Y).
+inf_has_property(X, vertebrates, Y) :- (is_a(X, bodypart)), has_property(A, vertebrates, Y).
